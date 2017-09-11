@@ -1,3 +1,6 @@
 [submodule "submodules/google-api-cpp-client"]
 	path = submodules/google-api-cpp-client
 	url = https://github.com/google/google-api-cpp-client
+[submodule "submodules/jsoncpp"]
+	path = submodules/jsoncpp
+	url = https://github.com/open-source-parsers/jsoncpp
