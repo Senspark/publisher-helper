@@ -13,9 +13,10 @@ CONFIG += c++1z
 
 INCLUDEPATH += \
     $$PWD/../androidpublisher \
-    $$PWD/../googleapis/include \    
+    $$PWD/../googleapis/include \
+    $$PWD/../gflags/include \
+    $$PWD/../glog/src \
     $$PWD/../jsoncpp/include
-#/usr/local/include \
 
 LIBS += \
     -L$$PWD/../googleapis/lib -lgoogle_calendar_api \
@@ -38,10 +39,12 @@ LIBS += \
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    calendarsample.cpp
 
 HEADERS += \
-    mainwindow.hpp
+    mainwindow.hpp \
+    calendarsample.hpp
 
 FORMS += \
     mainwindow.ui
