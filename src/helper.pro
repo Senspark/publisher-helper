@@ -11,10 +11,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++1z
 
+INCLUDEPATH += \
+    $$PWD/../androidpublisher \
+    $$PWD/../googleapis/include \
+    /usr/local/include \
+    ../submodules/jsoncpp/include
+
 LIBS += \
     -L$$PWD/../googleapis/lib -lgoogle_calendar_api \
     -L$$PWD/../googleapis/lib -lgoogle_storage_api \
     -L$$PWD/../googleapis/lib -lgoogleapis_curl_http \
+    -L$$PWD/../googleapis/lib -lgoogleapis_http \
     -L$$PWD/../googleapis/lib -lgoogleapis_internal \
     -L$$PWD/../googleapis/lib -lgoogleapis_json \
     -L$$PWD/../googleapis/lib -lgoogleapis_jsoncpp \
@@ -23,7 +30,9 @@ LIBS += \
     -L$$PWD/../googleapis/lib -lgoogleapis_openssl_codec \
     -L$$PWD/../googleapis/lib -lgoogleapis_scribes \
     -L$$PWD/../googleapis/lib -lgoogleapis_utils \
-    -L$$OUT_PWD/../androidpublisher -landroid_publisher
+    -L$$OUT_PWD/../androidpublisher -landroid_publisher \
+    /usr/local/lib/libglog.a \
+    /usr/local/lib/libgflags.dylib
 
 SOURCES += \
     main.cpp \
