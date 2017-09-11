@@ -4,8 +4,9 @@ CONFIG += staticlib
 
 INCLUDEPATH += \
     $$PWD/../googleapis/include \
-    /usr/local/include \
-    ../submodules/jsoncpp/include
+    $$PWD/../gflags/include \
+    $$PWD/../glog/src \
+    $$PWD/../jsoncpp/include
 
 HEADERS += \
     google/androidpublisher_api/android_publisher_service.h \

@@ -13,9 +13,9 @@ CONFIG += c++1z
 
 INCLUDEPATH += \
     $$PWD/../androidpublisher \
-    $$PWD/../googleapis/include \
-    /usr/local/include \
-    ../submodules/jsoncpp/include
+    $$PWD/../googleapis/include \    
+    $$PWD/../jsoncpp/include
+#/usr/local/include \
 
 LIBS += \
     -L$$PWD/../googleapis/lib -lgoogle_calendar_api \
@@ -31,8 +31,10 @@ LIBS += \
     -L$$PWD/../googleapis/lib -lgoogleapis_scribes \
     -L$$PWD/../googleapis/lib -lgoogleapis_utils \
     -L$$OUT_PWD/../androidpublisher -landroid_publisher \
-    /usr/local/lib/libglog.a \
-    /usr/local/lib/libgflags.dylib
+    $$PWD/../gflags/lib/libgflags.a \
+    $$PWD/../glog/.libs/libglog.a \
+    $$PWD/../jsoncpp/libjsoncpp.a \
+    -lcurl
 
 SOURCES += \
     main.cpp \
