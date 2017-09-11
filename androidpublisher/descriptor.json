@@ -1,0 +1,35 @@
+{
+  "kind": "discovery#directoryItem", 
+  "id": "androidpublisher:v2", 
+  "name": "androidpublisher", 
+  "version": "v2", 
+  "title": "Google Play Developer API", 
+  "description": "Lets Android application developers access their Google Play accounts.", 
+  "discoveryRestUrl": "https://www.googleapis.com/discovery/v1/apis/androidpublisher/v2/rest", 
+  "discoveryLink": "./apis/androidpublisher/v2/rest", 
+  "icons": {
+    "x16": "https://www.google.com/images/icons/product/android-16.png", 
+    "x32": "https://www.google.com/images/icons/product/android-32.png"
+  }, 
+  "documentationLink": "https://developers.google.com/android-publisher", 
+  "preferred": true, 
+  "packagePath": null, 
+  "canonicalName": "Android Publisher", 
+  "files": [
+    {
+      "downloadUrl": "/downloads/androidpublisher/v2/45/cpp/0.1.4/google-androidpublisher-v2-rev45-cpp-0.1.4-doc.zip", 
+      "path": "google-androidpublisher-v2-rev45-cpp-0.1.4-doc.zip", 
+      "type": "documentation", 
+      "timestamp": "2017-08-09 02:29"
+    }, 
+    {
+      "downloadUrl": "/downloads/androidpublisher/v2/45/cpp/0.1.4/google-androidpublisher-v2-rev45-cpp-0.1.4-src.zip", 
+      "path": "", 
+      "type": "source", 
+      "timestamp": "2017-08-09 03:29"
+    }
+  ], 
+  "revision": 45, 
+  "language": "cpp", 
+  "language_version": "0.1.4"
+}
