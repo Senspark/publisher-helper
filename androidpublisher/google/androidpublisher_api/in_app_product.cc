@@ -63,4 +63,46 @@ InAppProduct::InAppProduct(Json::Value* storage)
 // Standard destructor.
 InAppProduct::~InAppProduct() {
 }
+
+// Properties.
+
+const Price InAppProduct::get_default_price() const {
+   const Json::Value& storage = Storage("defaultPrice");
+   return client::JsonValueToCppValueHelper<Price >(storage);
+}
+
+Price InAppProduct::mutable_defaultPrice() {
+  Json::Value* storage = MutableStorage("defaultPrice");
+  return client::JsonValueToMutableCppValueHelper<Price >(storage);
+}
+
+const client::JsonCppAssociativeArray<InAppProductListing > InAppProduct::get_listings() const {
+   const Json::Value& storage = Storage("listings");
+   return client::JsonValueToCppValueHelper<client::JsonCppAssociativeArray<InAppProductListing > >(storage);
+}
+
+client::JsonCppAssociativeArray<InAppProductListing > InAppProduct::mutable_listings() {
+  Json::Value* storage = MutableStorage("listings");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppAssociativeArray<InAppProductListing > >(storage);
+}
+
+const client::JsonCppAssociativeArray<Price > InAppProduct::get_prices() const {
+   const Json::Value& storage = Storage("prices");
+   return client::JsonValueToCppValueHelper<client::JsonCppAssociativeArray<Price > >(storage);
+}
+
+client::JsonCppAssociativeArray<Price > InAppProduct::mutable_prices() {
+  Json::Value* storage = MutableStorage("prices");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppAssociativeArray<Price > >(storage);
+}
+
+const Season InAppProduct::get_season() const {
+   const Json::Value& storage = Storage("season");
+   return client::JsonValueToCppValueHelper<Season >(storage);
+}
+
+Season InAppProduct::mutable_season() {
+  Json::Value* storage = MutableStorage("season");
+  return client::JsonValueToMutableCppValueHelper<Season >(storage);
+}
 }  // namespace google_androidpublisher_api

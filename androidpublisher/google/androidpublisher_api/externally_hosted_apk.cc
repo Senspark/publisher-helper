@@ -62,4 +62,16 @@ ExternallyHostedApk::ExternallyHostedApk(Json::Value* storage)
 // Standard destructor.
 ExternallyHostedApk::~ExternallyHostedApk() {
 }
+
+// Properties.
+
+const client::JsonCppArray<ExternallyHostedApkUsesPermission > ExternallyHostedApk::get_uses_permissions() const {
+   const Json::Value& storage = Storage("usesPermissions");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<ExternallyHostedApkUsesPermission > >(storage);
+}
+
+client::JsonCppArray<ExternallyHostedApkUsesPermission > ExternallyHostedApk::mutable_usesPermissions() {
+  Json::Value* storage = MutableStorage("usesPermissions");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<ExternallyHostedApkUsesPermission > >(storage);
+}
 }  // namespace google_androidpublisher_api

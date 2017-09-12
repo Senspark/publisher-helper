@@ -60,4 +60,16 @@ ApksAddExternallyHostedResponse::ApksAddExternallyHostedResponse(Json::Value* st
 // Standard destructor.
 ApksAddExternallyHostedResponse::~ApksAddExternallyHostedResponse() {
 }
+
+// Properties.
+
+const ExternallyHostedApk ApksAddExternallyHostedResponse::get_externally_hosted_apk() const {
+   const Json::Value& storage = Storage("externallyHostedApk");
+   return client::JsonValueToCppValueHelper<ExternallyHostedApk >(storage);
+}
+
+ExternallyHostedApk ApksAddExternallyHostedResponse::mutable_externallyHostedApk() {
+  Json::Value* storage = MutableStorage("externallyHostedApk");
+  return client::JsonValueToMutableCppValueHelper<ExternallyHostedApk >(storage);
+}
 }  // namespace google_androidpublisher_api

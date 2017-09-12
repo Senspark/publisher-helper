@@ -63,4 +63,26 @@ UserComment::UserComment(Json::Value* storage)
 // Standard destructor.
 UserComment::~UserComment() {
 }
+
+// Properties.
+
+const DeviceMetadata UserComment::get_device_metadata() const {
+   const Json::Value& storage = Storage("deviceMetadata");
+   return client::JsonValueToCppValueHelper<DeviceMetadata >(storage);
+}
+
+DeviceMetadata UserComment::mutable_deviceMetadata() {
+  Json::Value* storage = MutableStorage("deviceMetadata");
+  return client::JsonValueToMutableCppValueHelper<DeviceMetadata >(storage);
+}
+
+const Timestamp UserComment::get_last_modified() const {
+   const Json::Value& storage = Storage("lastModified");
+   return client::JsonValueToCppValueHelper<Timestamp >(storage);
+}
+
+Timestamp UserComment::mutable_lastModified() {
+  Json::Value* storage = MutableStorage("lastModified");
+  return client::JsonValueToMutableCppValueHelper<Timestamp >(storage);
+}
 }  // namespace google_androidpublisher_api

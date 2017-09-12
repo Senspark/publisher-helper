@@ -60,4 +60,16 @@ ReviewsReplyResponse::ReviewsReplyResponse(Json::Value* storage)
 // Standard destructor.
 ReviewsReplyResponse::~ReviewsReplyResponse() {
 }
+
+// Properties.
+
+const ReviewReplyResult ReviewsReplyResponse::get_result() const {
+   const Json::Value& storage = Storage("result");
+   return client::JsonValueToCppValueHelper<ReviewReplyResult >(storage);
+}
+
+ReviewReplyResult ReviewsReplyResponse::mutable_result() {
+  Json::Value* storage = MutableStorage("result");
+  return client::JsonValueToMutableCppValueHelper<ReviewReplyResult >(storage);
+}
 }  // namespace google_androidpublisher_api

@@ -61,4 +61,16 @@ ApksListResponse::ApksListResponse(Json::Value* storage)
 // Standard destructor.
 ApksListResponse::~ApksListResponse() {
 }
+
+// Properties.
+
+const client::JsonCppArray<Apk > ApksListResponse::get_apks() const {
+   const Json::Value& storage = Storage("apks");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Apk > >(storage);
+}
+
+client::JsonCppArray<Apk > ApksListResponse::mutable_apks() {
+  Json::Value* storage = MutableStorage("apks");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Apk > >(storage);
+}
 }  // namespace google_androidpublisher_api

@@ -61,4 +61,16 @@ TracksListResponse::TracksListResponse(Json::Value* storage)
 // Standard destructor.
 TracksListResponse::~TracksListResponse() {
 }
+
+// Properties.
+
+const client::JsonCppArray<Track > TracksListResponse::get_tracks() const {
+   const Json::Value& storage = Storage("tracks");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Track > >(storage);
+}
+
+client::JsonCppArray<Track > TracksListResponse::mutable_tracks() {
+  Json::Value* storage = MutableStorage("tracks");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Track > >(storage);
+}
 }  // namespace google_androidpublisher_api

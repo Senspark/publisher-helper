@@ -61,4 +61,16 @@ Apk::Apk(Json::Value* storage)
 // Standard destructor.
 Apk::~Apk() {
 }
+
+// Properties.
+
+const ApkBinary Apk::get_binary() const {
+   const Json::Value& storage = Storage("binary");
+   return client::JsonValueToCppValueHelper<ApkBinary >(storage);
+}
+
+ApkBinary Apk::mutable_binary() {
+  Json::Value* storage = MutableStorage("binary");
+  return client::JsonValueToMutableCppValueHelper<ApkBinary >(storage);
+}
 }  // namespace google_androidpublisher_api

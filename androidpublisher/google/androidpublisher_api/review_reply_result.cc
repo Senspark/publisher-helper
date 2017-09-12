@@ -61,4 +61,16 @@ ReviewReplyResult::ReviewReplyResult(Json::Value* storage)
 // Standard destructor.
 ReviewReplyResult::~ReviewReplyResult() {
 }
+
+// Properties.
+
+const Timestamp ReviewReplyResult::get_last_edited() const {
+   const Json::Value& storage = Storage("lastEdited");
+   return client::JsonValueToCppValueHelper<Timestamp >(storage);
+}
+
+Timestamp ReviewReplyResult::mutable_lastEdited() {
+  Json::Value* storage = MutableStorage("lastEdited");
+  return client::JsonValueToMutableCppValueHelper<Timestamp >(storage);
+}
 }  // namespace google_androidpublisher_api

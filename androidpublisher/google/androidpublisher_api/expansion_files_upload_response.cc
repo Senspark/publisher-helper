@@ -60,4 +60,16 @@ ExpansionFilesUploadResponse::ExpansionFilesUploadResponse(Json::Value* storage)
 // Standard destructor.
 ExpansionFilesUploadResponse::~ExpansionFilesUploadResponse() {
 }
+
+// Properties.
+
+const ExpansionFile ExpansionFilesUploadResponse::get_expansion_file() const {
+   const Json::Value& storage = Storage("expansionFile");
+   return client::JsonValueToCppValueHelper<ExpansionFile >(storage);
+}
+
+ExpansionFile ExpansionFilesUploadResponse::mutable_expansionFile() {
+  Json::Value* storage = MutableStorage("expansionFile");
+  return client::JsonValueToMutableCppValueHelper<ExpansionFile >(storage);
+}
 }  // namespace google_androidpublisher_api

@@ -62,4 +62,26 @@ InappproductsBatchResponseEntry::InappproductsBatchResponseEntry(Json::Value* st
 // Standard destructor.
 InappproductsBatchResponseEntry::~InappproductsBatchResponseEntry() {
 }
+
+// Properties.
+
+const InappproductsInsertResponse InappproductsBatchResponseEntry::get_inappproductsinsertresponse() const {
+   const Json::Value& storage = Storage("inappproductsinsertresponse");
+   return client::JsonValueToCppValueHelper<InappproductsInsertResponse >(storage);
+}
+
+InappproductsInsertResponse InappproductsBatchResponseEntry::mutable_inappproductsinsertresponse() {
+  Json::Value* storage = MutableStorage("inappproductsinsertresponse");
+  return client::JsonValueToMutableCppValueHelper<InappproductsInsertResponse >(storage);
+}
+
+const InappproductsUpdateResponse InappproductsBatchResponseEntry::get_inappproductsupdateresponse() const {
+   const Json::Value& storage = Storage("inappproductsupdateresponse");
+   return client::JsonValueToCppValueHelper<InappproductsUpdateResponse >(storage);
+}
+
+InappproductsUpdateResponse InappproductsBatchResponseEntry::mutable_inappproductsupdateresponse() {
+  Json::Value* storage = MutableStorage("inappproductsupdateresponse");
+  return client::JsonValueToMutableCppValueHelper<InappproductsUpdateResponse >(storage);
+}
 }  // namespace google_androidpublisher_api

@@ -62,4 +62,36 @@ EntitlementsListResponse::EntitlementsListResponse(Json::Value* storage)
 // Standard destructor.
 EntitlementsListResponse::~EntitlementsListResponse() {
 }
+
+// Properties.
+
+const PageInfo EntitlementsListResponse::get_page_info() const {
+   const Json::Value& storage = Storage("pageInfo");
+   return client::JsonValueToCppValueHelper<PageInfo >(storage);
+}
+
+PageInfo EntitlementsListResponse::mutable_pageInfo() {
+  Json::Value* storage = MutableStorage("pageInfo");
+  return client::JsonValueToMutableCppValueHelper<PageInfo >(storage);
+}
+
+const client::JsonCppArray<Entitlement > EntitlementsListResponse::get_resources() const {
+   const Json::Value& storage = Storage("resources");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Entitlement > >(storage);
+}
+
+client::JsonCppArray<Entitlement > EntitlementsListResponse::mutable_resources() {
+  Json::Value* storage = MutableStorage("resources");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Entitlement > >(storage);
+}
+
+const TokenPagination EntitlementsListResponse::get_token_pagination() const {
+   const Json::Value& storage = Storage("tokenPagination");
+   return client::JsonValueToCppValueHelper<TokenPagination >(storage);
+}
+
+TokenPagination EntitlementsListResponse::mutable_tokenPagination() {
+  Json::Value* storage = MutableStorage("tokenPagination");
+  return client::JsonValueToMutableCppValueHelper<TokenPagination >(storage);
+}
 }  // namespace google_androidpublisher_api

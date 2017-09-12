@@ -60,4 +60,16 @@ DeobfuscationFilesUploadResponse::DeobfuscationFilesUploadResponse(Json::Value* 
 // Standard destructor.
 DeobfuscationFilesUploadResponse::~DeobfuscationFilesUploadResponse() {
 }
+
+// Properties.
+
+const DeobfuscationFile DeobfuscationFilesUploadResponse::get_deobfuscation_file() const {
+   const Json::Value& storage = Storage("deobfuscationFile");
+   return client::JsonValueToCppValueHelper<DeobfuscationFile >(storage);
+}
+
+DeobfuscationFile DeobfuscationFilesUploadResponse::mutable_deobfuscationFile() {
+  Json::Value* storage = MutableStorage("deobfuscationFile");
+  return client::JsonValueToMutableCppValueHelper<DeobfuscationFile >(storage);
+}
 }  // namespace google_androidpublisher_api

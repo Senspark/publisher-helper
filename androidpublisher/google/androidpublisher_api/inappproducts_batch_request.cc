@@ -60,4 +60,16 @@ InappproductsBatchRequest::InappproductsBatchRequest(Json::Value* storage)
 // Standard destructor.
 InappproductsBatchRequest::~InappproductsBatchRequest() {
 }
+
+// Properties.
+
+const client::JsonCppArray<InappproductsBatchRequestEntry > InappproductsBatchRequest::get_entrys() const {
+   const Json::Value& storage = Storage("entrys");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<InappproductsBatchRequestEntry > >(storage);
+}
+
+client::JsonCppArray<InappproductsBatchRequestEntry > InappproductsBatchRequest::mutable_entrys() {
+  Json::Value* storage = MutableStorage("entrys");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<InappproductsBatchRequestEntry > >(storage);
+}
 }  // namespace google_androidpublisher_api

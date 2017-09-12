@@ -60,4 +60,16 @@ ImagesUploadResponse::ImagesUploadResponse(Json::Value* storage)
 // Standard destructor.
 ImagesUploadResponse::~ImagesUploadResponse() {
 }
+
+// Properties.
+
+const Image ImagesUploadResponse::get_image() const {
+   const Json::Value& storage = Storage("image");
+   return client::JsonValueToCppValueHelper<Image >(storage);
+}
+
+Image ImagesUploadResponse::mutable_image() {
+  Json::Value* storage = MutableStorage("image");
+  return client::JsonValueToMutableCppValueHelper<Image >(storage);
+}
 }  // namespace google_androidpublisher_api

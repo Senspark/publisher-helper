@@ -63,4 +63,36 @@ InappproductsListResponse::InappproductsListResponse(Json::Value* storage)
 // Standard destructor.
 InappproductsListResponse::~InappproductsListResponse() {
 }
+
+// Properties.
+
+const client::JsonCppArray<InAppProduct > InappproductsListResponse::get_inappproduct() const {
+   const Json::Value& storage = Storage("inappproduct");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<InAppProduct > >(storage);
+}
+
+client::JsonCppArray<InAppProduct > InappproductsListResponse::mutable_inappproduct() {
+  Json::Value* storage = MutableStorage("inappproduct");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<InAppProduct > >(storage);
+}
+
+const PageInfo InappproductsListResponse::get_page_info() const {
+   const Json::Value& storage = Storage("pageInfo");
+   return client::JsonValueToCppValueHelper<PageInfo >(storage);
+}
+
+PageInfo InappproductsListResponse::mutable_pageInfo() {
+  Json::Value* storage = MutableStorage("pageInfo");
+  return client::JsonValueToMutableCppValueHelper<PageInfo >(storage);
+}
+
+const TokenPagination InappproductsListResponse::get_token_pagination() const {
+   const Json::Value& storage = Storage("tokenPagination");
+   return client::JsonValueToCppValueHelper<TokenPagination >(storage);
+}
+
+TokenPagination InappproductsListResponse::mutable_tokenPagination() {
+  Json::Value* storage = MutableStorage("tokenPagination");
+  return client::JsonValueToMutableCppValueHelper<TokenPagination >(storage);
+}
 }  // namespace google_androidpublisher_api

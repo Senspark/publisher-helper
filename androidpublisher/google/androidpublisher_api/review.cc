@@ -61,4 +61,16 @@ Review::Review(Json::Value* storage)
 // Standard destructor.
 Review::~Review() {
 }
+
+// Properties.
+
+const client::JsonCppArray<Comment > Review::get_comments() const {
+   const Json::Value& storage = Storage("comments");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Comment > >(storage);
+}
+
+client::JsonCppArray<Comment > Review::mutable_comments() {
+  Json::Value* storage = MutableStorage("comments");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Comment > >(storage);
+}
 }  // namespace google_androidpublisher_api

@@ -60,4 +60,16 @@ InappproductsUpdateResponse::InappproductsUpdateResponse(Json::Value* storage)
 // Standard destructor.
 InappproductsUpdateResponse::~InappproductsUpdateResponse() {
 }
+
+// Properties.
+
+const InAppProduct InappproductsUpdateResponse::get_inappproduct() const {
+   const Json::Value& storage = Storage("inappproduct");
+   return client::JsonValueToCppValueHelper<InAppProduct >(storage);
+}
+
+InAppProduct InappproductsUpdateResponse::mutable_inappproduct() {
+  Json::Value* storage = MutableStorage("inappproduct");
+  return client::JsonValueToMutableCppValueHelper<InAppProduct >(storage);
+}
 }  // namespace google_androidpublisher_api

@@ -61,4 +61,26 @@ Comment::Comment(Json::Value* storage)
 // Standard destructor.
 Comment::~Comment() {
 }
+
+// Properties.
+
+const DeveloperComment Comment::get_developer_comment() const {
+   const Json::Value& storage = Storage("developerComment");
+   return client::JsonValueToCppValueHelper<DeveloperComment >(storage);
+}
+
+DeveloperComment Comment::mutable_developerComment() {
+  Json::Value* storage = MutableStorage("developerComment");
+  return client::JsonValueToMutableCppValueHelper<DeveloperComment >(storage);
+}
+
+const UserComment Comment::get_user_comment() const {
+   const Json::Value& storage = Storage("userComment");
+   return client::JsonValueToCppValueHelper<UserComment >(storage);
+}
+
+UserComment Comment::mutable_userComment() {
+  Json::Value* storage = MutableStorage("userComment");
+  return client::JsonValueToMutableCppValueHelper<UserComment >(storage);
+}
 }  // namespace google_androidpublisher_api

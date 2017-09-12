@@ -60,4 +60,16 @@ ImagesDeleteAllResponse::ImagesDeleteAllResponse(Json::Value* storage)
 // Standard destructor.
 ImagesDeleteAllResponse::~ImagesDeleteAllResponse() {
 }
+
+// Properties.
+
+const client::JsonCppArray<Image > ImagesDeleteAllResponse::get_deleted() const {
+   const Json::Value& storage = Storage("deleted");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Image > >(storage);
+}
+
+client::JsonCppArray<Image > ImagesDeleteAllResponse::mutable_deleted() {
+  Json::Value* storage = MutableStorage("deleted");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Image > >(storage);
+}
 }  // namespace google_androidpublisher_api

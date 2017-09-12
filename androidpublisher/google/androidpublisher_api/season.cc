@@ -61,4 +61,36 @@ Season::Season(Json::Value* storage)
 // Standard destructor.
 Season::~Season() {
 }
+
+// Properties.
+
+const MonthDay Season::get_end() const {
+   const Json::Value& storage = Storage("end");
+   return client::JsonValueToCppValueHelper<MonthDay >(storage);
+}
+
+MonthDay Season::mutable_end() {
+  Json::Value* storage = MutableStorage("end");
+  return client::JsonValueToMutableCppValueHelper<MonthDay >(storage);
+}
+
+const client::JsonCppArray<Prorate > Season::get_prorations() const {
+   const Json::Value& storage = Storage("prorations");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Prorate > >(storage);
+}
+
+client::JsonCppArray<Prorate > Season::mutable_prorations() {
+  Json::Value* storage = MutableStorage("prorations");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Prorate > >(storage);
+}
+
+const MonthDay Season::get_start() const {
+   const Json::Value& storage = Storage("start");
+   return client::JsonValueToCppValueHelper<MonthDay >(storage);
+}
+
+MonthDay Season::mutable_start() {
+  Json::Value* storage = MutableStorage("start");
+  return client::JsonValueToMutableCppValueHelper<MonthDay >(storage);
+}
 }  // namespace google_androidpublisher_api

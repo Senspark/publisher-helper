@@ -60,4 +60,16 @@ SubscriptionPurchasesDeferRequest::SubscriptionPurchasesDeferRequest(Json::Value
 // Standard destructor.
 SubscriptionPurchasesDeferRequest::~SubscriptionPurchasesDeferRequest() {
 }
+
+// Properties.
+
+const SubscriptionDeferralInfo SubscriptionPurchasesDeferRequest::get_deferral_info() const {
+   const Json::Value& storage = Storage("deferralInfo");
+   return client::JsonValueToCppValueHelper<SubscriptionDeferralInfo >(storage);
+}
+
+SubscriptionDeferralInfo SubscriptionPurchasesDeferRequest::mutable_deferralInfo() {
+  Json::Value* storage = MutableStorage("deferralInfo");
+  return client::JsonValueToMutableCppValueHelper<SubscriptionDeferralInfo >(storage);
+}
 }  // namespace google_androidpublisher_api

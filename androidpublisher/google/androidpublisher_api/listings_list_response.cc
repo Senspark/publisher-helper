@@ -61,4 +61,16 @@ ListingsListResponse::ListingsListResponse(Json::Value* storage)
 // Standard destructor.
 ListingsListResponse::~ListingsListResponse() {
 }
+
+// Properties.
+
+const client::JsonCppArray<Listing > ListingsListResponse::get_listings() const {
+   const Json::Value& storage = Storage("listings");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Listing > >(storage);
+}
+
+client::JsonCppArray<Listing > ListingsListResponse::mutable_listings() {
+  Json::Value* storage = MutableStorage("listings");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Listing > >(storage);
+}
 }  // namespace google_androidpublisher_api

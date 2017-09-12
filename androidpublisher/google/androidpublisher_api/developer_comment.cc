@@ -61,4 +61,16 @@ DeveloperComment::DeveloperComment(Json::Value* storage)
 // Standard destructor.
 DeveloperComment::~DeveloperComment() {
 }
+
+// Properties.
+
+const Timestamp DeveloperComment::get_last_modified() const {
+   const Json::Value& storage = Storage("lastModified");
+   return client::JsonValueToCppValueHelper<Timestamp >(storage);
+}
+
+Timestamp DeveloperComment::mutable_lastModified() {
+  Json::Value* storage = MutableStorage("lastModified");
+  return client::JsonValueToMutableCppValueHelper<Timestamp >(storage);
+}
 }  // namespace google_androidpublisher_api

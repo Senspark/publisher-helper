@@ -62,4 +62,36 @@ VoidedPurchasesListResponse::VoidedPurchasesListResponse(Json::Value* storage)
 // Standard destructor.
 VoidedPurchasesListResponse::~VoidedPurchasesListResponse() {
 }
+
+// Properties.
+
+const PageInfo VoidedPurchasesListResponse::get_page_info() const {
+   const Json::Value& storage = Storage("pageInfo");
+   return client::JsonValueToCppValueHelper<PageInfo >(storage);
+}
+
+PageInfo VoidedPurchasesListResponse::mutable_pageInfo() {
+  Json::Value* storage = MutableStorage("pageInfo");
+  return client::JsonValueToMutableCppValueHelper<PageInfo >(storage);
+}
+
+const TokenPagination VoidedPurchasesListResponse::get_token_pagination() const {
+   const Json::Value& storage = Storage("tokenPagination");
+   return client::JsonValueToCppValueHelper<TokenPagination >(storage);
+}
+
+TokenPagination VoidedPurchasesListResponse::mutable_tokenPagination() {
+  Json::Value* storage = MutableStorage("tokenPagination");
+  return client::JsonValueToMutableCppValueHelper<TokenPagination >(storage);
+}
+
+const client::JsonCppArray<VoidedPurchase > VoidedPurchasesListResponse::get_voided_purchases() const {
+   const Json::Value& storage = Storage("voidedPurchases");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<VoidedPurchase > >(storage);
+}
+
+client::JsonCppArray<VoidedPurchase > VoidedPurchasesListResponse::mutable_voidedPurchases() {
+  Json::Value* storage = MutableStorage("voidedPurchases");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<VoidedPurchase > >(storage);
+}
 }  // namespace google_androidpublisher_api

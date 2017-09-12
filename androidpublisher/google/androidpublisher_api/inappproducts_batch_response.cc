@@ -61,4 +61,16 @@ InappproductsBatchResponse::InappproductsBatchResponse(Json::Value* storage)
 // Standard destructor.
 InappproductsBatchResponse::~InappproductsBatchResponse() {
 }
+
+// Properties.
+
+const client::JsonCppArray<InappproductsBatchResponseEntry > InappproductsBatchResponse::get_entrys() const {
+   const Json::Value& storage = Storage("entrys");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<InappproductsBatchResponseEntry > >(storage);
+}
+
+client::JsonCppArray<InappproductsBatchResponseEntry > InappproductsBatchResponse::mutable_entrys() {
+  Json::Value* storage = MutableStorage("entrys");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<InappproductsBatchResponseEntry > >(storage);
+}
 }  // namespace google_androidpublisher_api

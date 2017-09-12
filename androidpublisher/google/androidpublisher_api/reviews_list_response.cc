@@ -62,4 +62,36 @@ ReviewsListResponse::ReviewsListResponse(Json::Value* storage)
 // Standard destructor.
 ReviewsListResponse::~ReviewsListResponse() {
 }
+
+// Properties.
+
+const PageInfo ReviewsListResponse::get_page_info() const {
+   const Json::Value& storage = Storage("pageInfo");
+   return client::JsonValueToCppValueHelper<PageInfo >(storage);
+}
+
+PageInfo ReviewsListResponse::mutable_pageInfo() {
+  Json::Value* storage = MutableStorage("pageInfo");
+  return client::JsonValueToMutableCppValueHelper<PageInfo >(storage);
+}
+
+const client::JsonCppArray<Review > ReviewsListResponse::get_reviews() const {
+   const Json::Value& storage = Storage("reviews");
+   return client::JsonValueToCppValueHelper<client::JsonCppArray<Review > >(storage);
+}
+
+client::JsonCppArray<Review > ReviewsListResponse::mutable_reviews() {
+  Json::Value* storage = MutableStorage("reviews");
+  return client::JsonValueToMutableCppValueHelper<client::JsonCppArray<Review > >(storage);
+}
+
+const TokenPagination ReviewsListResponse::get_token_pagination() const {
+   const Json::Value& storage = Storage("tokenPagination");
+   return client::JsonValueToCppValueHelper<TokenPagination >(storage);
+}
+
+TokenPagination ReviewsListResponse::mutable_tokenPagination() {
+  Json::Value* storage = MutableStorage("tokenPagination");
+  return client::JsonValueToMutableCppValueHelper<TokenPagination >(storage);
+}
 }  // namespace google_androidpublisher_api

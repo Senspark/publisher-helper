@@ -61,4 +61,26 @@ Prorate::Prorate(Json::Value* storage)
 // Standard destructor.
 Prorate::~Prorate() {
 }
+
+// Properties.
+
+const Price Prorate::get_default_price() const {
+   const Json::Value& storage = Storage("defaultPrice");
+   return client::JsonValueToCppValueHelper<Price >(storage);
+}
+
+Price Prorate::mutable_defaultPrice() {
+  Json::Value* storage = MutableStorage("defaultPrice");
+  return client::JsonValueToMutableCppValueHelper<Price >(storage);
+}
+
+const MonthDay Prorate::get_start() const {
+   const Json::Value& storage = Storage("start");
+   return client::JsonValueToCppValueHelper<MonthDay >(storage);
+}
+
+MonthDay Prorate::mutable_start() {
+  Json::Value* storage = MutableStorage("start");
+  return client::JsonValueToMutableCppValueHelper<MonthDay >(storage);
+}
 }  // namespace google_androidpublisher_api
