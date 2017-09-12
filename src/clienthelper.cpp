@@ -111,6 +111,10 @@ Self::iap_list(const std::string& packageName,
         google_androidpublisher_api::InappproductsResource_ListMethod>
         method(getService()->get_inappproducts().NewListMethod(getCredential(),
                                                                packageName));
+    // https://developers.google.com/drive/v3/web/performance#patch
+    // https://developers.google.com/google-apps/tasks/performance
+    method->set_fields("inappproduct(listings,packageName,sku,status)");
+    return method->ExecuteAndParseResponse(data);
     return method->ExecuteAndParseResponse(data);
 }
 
