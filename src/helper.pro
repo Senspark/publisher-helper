@@ -42,11 +42,13 @@ LIBS += \
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    clienthelper.cpp
+    clienthelper.cpp \
+    inappproducttree.cpp
 
 HEADERS += \
     mainwindow.hpp \
-    clienthelper.hpp
+    clienthelper.hpp \
+    inappproducttree.hpp
 
 FORMS += \
     mainwindow.ui

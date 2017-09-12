@@ -1,4 +1,5 @@
 #include <ciso646>
+#include <sstream>
 
 #include "clienthelper.hpp"
 #include "mainwindow.hpp"
@@ -6,6 +7,7 @@
 
 #include <QDebug>
 #include <QFileDialog>
+#include <QJsonDocument>
 #include <QMessageBox>
 #include <QSettings>
 
@@ -42,7 +44,6 @@ Self::MainWindow(QWidget* parent)
                                   QString::fromStdString(status.ToString()),
                                   QMessageBox::Button::Ok);
         }
-
     });
 
     connect(ui_->refreshButton, &QPushButton::clicked, [this] {
@@ -51,21 +52,19 @@ Self::MainWindow(QWidget* parent)
             return;
         }
 
-        using DataTp = google_androidpublisher_api::InappproductsListResponse;
-        std::unique_ptr<DataTp> data_ptr(DataTp::New());
-        DataTp* data(data_ptr.get());
-
-        auto status = helper_->iap_list(packageName.toStdString(), data);
+        auto data = std::unique_ptr<
+            google_androidpublisher_api::InappproductsListResponse>(
+            google_androidpublisher_api::InappproductsListResponse::New());
+        auto status = helper_->iap_list(packageName.toStdString(), data.get());
         if (not status.ok()) {
             QMessageBox::critical(this, "Error",
                                   QString::fromStdString(status.ToString()),
                                   QMessageBox::Button::Ok);
+            return;
         }
 
-        auto iapList = data->mutable_inappproduct(); // get_inappproduct();
-        for (const google_androidpublisher_api::InAppProduct& iap : iapList) {
-            qDebug() << QString::fromStdString(iap.get_sku().as_string());
-        }
+        ui_->inAppProductTree->setInAppProducts(*data);
+        ui_->inAppProductTree->showTitle();
     });
 
     updateJsonFilePath();

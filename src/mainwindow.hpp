@@ -18,7 +18,7 @@ private:
 
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    virtual ~MainWindow() override;
 
 protected:
     QString getJsonFilePath();
