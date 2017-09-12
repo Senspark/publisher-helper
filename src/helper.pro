@@ -35,6 +35,8 @@ LIBS += \
     $$PWD/../gflags/lib/libgflags.a \
     $$PWD/../glog/.libs/libglog.a \
     $$PWD/../jsoncpp/libjsoncpp.a \
+    $$PWD/../openssl/libssl.a \
+    $$PWD/../openssl/libcrypto.a \
     -lcurl
 
 SOURCES += \
