@@ -37,6 +37,11 @@ public:
              google_androidpublisher_api::InappproductsListResponse* data);
 
     googleapis::util::Status
+    iap_patch(const std::string& packageName, const std::string& sku,
+              const google_androidpublisher_api::InAppProduct& content,
+              google_androidpublisher_api::InAppProduct* data);
+
+    googleapis::util::Status
     iap_update(const std::string& packageName, const std::string& sku,
                const google_androidpublisher_api::InAppProduct& content,
                google_androidpublisher_api::InAppProduct* data);

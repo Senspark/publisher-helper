@@ -115,6 +115,16 @@ Self::iap_list(const std::string& packageName,
     // https://developers.google.com/google-apps/tasks/performance
     method->set_fields("inappproduct(listings,packageName,sku,status)");
     return method->ExecuteAndParseResponse(data);
+}
+
+googleapis::util::Status
+Self::iap_patch(const std::string& packageName, const std::string& sku,
+                const google_androidpublisher_api::InAppProduct& content,
+                google_androidpublisher_api::InAppProduct* data) {
+    std::unique_ptr<
+        google_androidpublisher_api::InappproductsResource_PatchMethod>
+        method(getService()->get_inappproducts().NewPatchMethod(
+            getCredential(), packageName, sku, content));
     return method->ExecuteAndParseResponse(data);
 }
 
