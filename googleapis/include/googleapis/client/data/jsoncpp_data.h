@@ -45,6 +45,7 @@ using std::string;
 #include "googleapis/client/data/jsoncpp_data_helpers.h"
 #include "googleapis/base/macros.h"
 #include <json/json.h>
+#include <glog/logging.h>
 namespace googleapis {
 
 namespace client {
