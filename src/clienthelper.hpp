@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include <google/androidpublisher_api/in_app_product.h>
 #include <google/androidpublisher_api/inappproducts_list_response.h>
 #include <google/androidpublisher_api/reviews_list_response.h>
 #include <googleapis/util/status.h>
@@ -26,11 +27,19 @@ public:
     ~ClientHelper();
 
     googleapis::util::Status startUp(const std::string& secretFilePath);
-    // googleapis::util::Status anthorize();
+
+    googleapis::util::Status
+    iap_get(const std::string& packageName, const std::string& sku,
+            google_androidpublisher_api::InAppProduct* data);
 
     googleapis::util::Status
     iap_list(const std::string& packageName,
              google_androidpublisher_api::InappproductsListResponse* data);
+
+    googleapis::util::Status
+    iap_update(const std::string& packageName, const std::string& sku,
+               const google_androidpublisher_api::InAppProduct& content,
+               google_androidpublisher_api::InAppProduct* data);
 
     googleapis::util::Status
     reviews_list(const std::string& packageName,

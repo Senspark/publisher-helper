@@ -24,7 +24,7 @@ void Self::resetFlow(googleapis::client::HttpTransport* transport) {
     flow_.reset(new googleapis::client::OAuth2ServiceAccountFlow(transport));
 }
 
-void Self::resetCredential() {    
+void Self::resetCredential() {
     credential_ = std::make_unique<googleapis::client::OAuth2Credential>();
 }
 
@@ -95,12 +95,33 @@ googleapis::util::Status Self::startUp(const std::string& secretFilePath) {
 }
 
 googleapis::util::Status
+Self::iap_get(const std::string& packageName, const std::string& sku,
+              google_androidpublisher_api::InAppProduct* data) {
+    std::unique_ptr<
+        google_androidpublisher_api::InappproductsResource_GetMethod>
+        method(getService()->get_inappproducts().NewGetMethod(
+            getCredential(), packageName, sku));
+    return method->ExecuteAndParseResponse(data);
+}
+
+googleapis::util::Status
 Self::iap_list(const std::string& packageName,
                google_androidpublisher_api::InappproductsListResponse* data) {
     std::unique_ptr<
         google_androidpublisher_api::InappproductsResource_ListMethod>
         method(getService()->get_inappproducts().NewListMethod(getCredential(),
                                                                packageName));
+    return method->ExecuteAndParseResponse(data);
+}
+
+googleapis::util::Status
+Self::iap_update(const std::string& packageName, const std::string& sku,
+                 const google_androidpublisher_api::InAppProduct& content,
+                 google_androidpublisher_api::InAppProduct* data) {
+    std::unique_ptr<
+        google_androidpublisher_api::InappproductsResource_UpdateMethod>
+        method(getService()->get_inappproducts().NewUpdateMethod(
+            getCredential(), packageName, sku, content));
     return method->ExecuteAndParseResponse(data);
 }
 
