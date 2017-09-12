@@ -3,12 +3,11 @@
 
 #include <QMainWindow>
 
-#include <google/androidpublisher_api/android_publisher_service.h>
-#include <googleapis/client/auth/oauth2_authorization.h>
-
 namespace Ui {
 class MainWindow;
 } // namespace Ui
+
+class ClientHelper;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -27,13 +26,10 @@ protected:
     void updateJsonFilePath();
     void updateJsonFilePath(QString& path);
 
-    std::unique_ptr<googleapis::client::HttpTransportLayerConfig> config_;
-    std::unique_ptr<googleapis::client::OAuth2AuthorizationFlow> flow_;
-    std::unique_ptr<google_androidpublisher_api::AndroidPublisherService>
-        service_;
-
 private:
     Ui::MainWindow* ui_;
+
+    ClientHelper* helper_;
 };
 
 #endif // MAINWINDOW_HPP

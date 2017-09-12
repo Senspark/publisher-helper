@@ -42,11 +42,11 @@ LIBS += \
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    calendarsample.cpp
+    clienthelper.cpp
 
 HEADERS += \
     mainwindow.hpp \
-    calendarsample.hpp
+    clienthelper.hpp
 
 FORMS += \
     mainwindow.ui

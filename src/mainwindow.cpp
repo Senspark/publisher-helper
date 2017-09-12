@@ -1,20 +1,20 @@
 #include <ciso646>
 
+#include "clienthelper.hpp"
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 
+#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
-
-#include <googleapis/client/transport/curl_http_transport.h>
-#include <googleapis/client/transport/http_authorization.h>
 
 using Self = MainWindow;
 
 Self::MainWindow(QWidget* parent)
     : Super(parent)
-    , ui_(new Ui::MainWindow) {
+    , ui_(new Ui::MainWindow)
+    , helper_(new ClientHelper()) {
     ui_->setupUi(this);
 
     ui_->jsonInput->setReadOnly(true);
@@ -33,27 +33,38 @@ Self::MainWindow(QWidget* parent)
 
     connect(ui_->authorizeButton, &QPushButton::clicked, [this] {
         auto jsonFilePath = getJsonFilePath();
-        QFile file(jsonFilePath);
-        if (not file.open(QIODevice::ReadOnly)) {
+        if (jsonFilePath.isEmpty()) {
             return;
         }
-        auto jsonContent = file.readAll();
-
-        config_.reset(new googleapis::client::HttpTransportLayerConfig());
-        config_->ResetDefaultTransportFactory(
-            new googleapis::client::CurlHttpTransportFactory(config_.get()));
-
-        googleapis::util::Status status;
-        flow_.reset(googleapis::client::OAuth2AuthorizationFlow::
-                        MakeFlowFromClientSecretsJson(
-                            jsonContent.toStdString(),
-                            config_->NewDefaultTransportOrDie(),
-                            std::addressof(status)));
+        auto status = helper_->startUp(jsonFilePath.toStdString());
         if (not status.ok()) {
-            QMessageBox::critical(
-                this, "Error", QString::fromStdString(status.error_message()),
-                QMessageBox::Button::Ok);
+            QMessageBox::critical(this, "Error",
+                                  QString::fromStdString(status.ToString()),
+                                  QMessageBox::Button::Ok);
+        }
+
+    });
+
+    connect(ui_->refreshButton, &QPushButton::clicked, [this] {
+        auto packageName = ui_->packageInput->text();
+        if (packageName.isEmpty()) {
             return;
+        }
+
+        using DataTp = google_androidpublisher_api::InappproductsListResponse;
+        std::unique_ptr<DataTp> data_ptr(DataTp::New());
+        DataTp* data(data_ptr.get());
+
+        auto status = helper_->iap_list(packageName.toStdString(), data);
+        if (not status.ok()) {
+            QMessageBox::critical(this, "Error",
+                                  QString::fromStdString(status.ToString()),
+                                  QMessageBox::Button::Ok);
+        }
+
+        auto iapList = data->mutable_inappproduct(); // get_inappproduct();
+        for (const google_androidpublisher_api::InAppProduct& iap : iapList) {
+            qDebug() << QString::fromStdString(iap.get_sku().as_string());
         }
     });
 
@@ -62,6 +73,7 @@ Self::MainWindow(QWidget* parent)
 
 Self::~MainWindow() {
     delete ui_;
+    delete helper_;
 }
 
 QString Self::getJsonFilePath() {
