@@ -26,6 +26,8 @@ public:
     ClientHelper();
     ~ClientHelper();
 
+    void reset();
+
     googleapis::util::Status startUp(const std::string& secretFilePath);
 
     googleapis::util::Status

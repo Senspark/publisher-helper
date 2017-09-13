@@ -43,12 +43,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     clienthelper.cpp \
-    inappproducttree.cpp
+    inappproducttree.cpp \
+    inappproductmodel.cpp
 
 HEADERS += \
     mainwindow.hpp \
     clienthelper.hpp \
-    inappproducttree.hpp
+    inappproducttree.hpp \
+    inappproductmodel.hpp
 
 FORMS += \
     mainwindow.ui

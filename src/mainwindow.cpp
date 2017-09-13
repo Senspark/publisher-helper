@@ -20,6 +20,7 @@ Self::MainWindow(QWidget* parent)
     ui_->setupUi(this);
 
     ui_->jsonInput->setReadOnly(true);
+    ui_->authorizationLabel->setText("AUTHORIZATION: NO");
 
     connect(ui_->browseButton, &QPushButton::clicked, [this] {
         auto oldPath = getJsonFilePath();
@@ -28,9 +29,14 @@ Self::MainWindow(QWidget* parent)
         if (path.isEmpty()) {
             return;
         }
+        if (oldPath == path) {
+            return;
+        }
 
         setJsonFilePath(path);
         updateJsonFilePath(path);
+        helper_->reset();
+        ui_->authorizationLabel->setText("AUTHORIZATION: NO");
     });
 
     connect(ui_->authorizeButton, &QPushButton::clicked, [this] {
@@ -43,13 +49,16 @@ Self::MainWindow(QWidget* parent)
             QMessageBox::critical(this, "Error",
                                   QString::fromStdString(status.ToString()),
                                   QMessageBox::Button::Ok);
+            return;
         }
+
+        ui_->authorizationLabel->setText("AUTHORIZATION: YES");
     });
 
     connect(ui_->refreshButton, &QPushButton::clicked, [this] {
         auto packageName = ui_->packageInput->text();
         if (packageName.isEmpty()) {
-            return;
+            // return;
         }
 
         auto data = std::unique_ptr<
@@ -63,7 +72,7 @@ Self::MainWindow(QWidget* parent)
             return;
         }
 
-        ui_->inAppProductTree->setInAppProducts(*data);
+        ui_->inAppProductTree->setInAppProducts(std::move(data));
         ui_->inAppProductTree->showTitle();
     });
 

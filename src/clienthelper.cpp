@@ -16,6 +16,13 @@ using Self = ClientHelper;
 Self::ClientHelper() {}
 Self::~ClientHelper() {}
 
+void Self::reset() {
+    config_.reset();
+    flow_.reset();
+    credential_.reset();
+    service_.reset();
+}
+
 void Self::resetConfig() {
     config_.reset(new googleapis::client::HttpTransportLayerConfig());
 }
@@ -125,6 +132,7 @@ Self::iap_patch(const std::string& packageName, const std::string& sku,
         google_androidpublisher_api::InappproductsResource_PatchMethod>
         method(getService()->get_inappproducts().NewPatchMethod(
             getCredential(), packageName, sku, content));
+    method->set_fields("listings,packageName,sku,status");
     return method->ExecuteAndParseResponse(data);
 }
 
