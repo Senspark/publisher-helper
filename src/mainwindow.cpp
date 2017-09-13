@@ -76,6 +76,19 @@ Self::MainWindow(QWidget* parent)
         ui_->inAppProductTree->showTitle();
     });
 
+    connect(ui_->patchButton, &QPushButton::clicked, [this] {
+        auto status = ui_->inAppProductTree->patch(helper_);
+        if (not status.ok()) {
+            QMessageBox::critical(this, "Error",
+                                  QString::fromStdString(status.ToString()),
+                                  QMessageBox::Button::Ok);
+            return;
+        }
+        QMessageBox::information(this, "ˆInfo",
+                                 "Operation has completed successfully!",
+                                 QMessageBox::Button::Ok);
+    });
+
     updateJsonFilePath();
 }
 

@@ -5,6 +5,8 @@
 
 #include <google/androidpublisher_api/inappproducts_list_response.h>
 
+class ClientHelper;
+
 class InAppProductTree : public QTreeView {
 private:
     using Self = InAppProductTree;
@@ -18,6 +20,8 @@ public:
     void setInAppProducts(
         std::unique_ptr<google_androidpublisher_api::InappproductsListResponse>
             iapList);
+
+    googleapis::util::Status patch(ClientHelper* helper);
 
     void showTitle();
 
