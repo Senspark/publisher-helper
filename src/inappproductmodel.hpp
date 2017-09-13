@@ -43,6 +43,10 @@ public:
 
     virtual Qt::ItemFlags flags(const QModelIndex& index) const override;
 
+    google_androidpublisher_api::InAppProduct& getItemAt(int i);
+
+    const google_androidpublisher_api::InAppProduct& getItemAt(int i) const;
+
 private:
     QVector<QString> localizations_;
     std::vector<std::unique_ptr<google_androidpublisher_api::InAppProduct>>

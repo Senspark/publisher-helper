@@ -1,3 +1,4 @@
+#include <ciso646>
 #include <sstream>
 
 #include "clienthelper.hpp"
@@ -25,32 +26,37 @@ void Self::setInAppProducts(
         products.emplace_back(std::addressof(value));
     }
 
-    auto model = new InAppProductModel();
-    model->load(products);
-    setModel(model);
+    model_ = new InAppProductModel();
+    model_->load(products);
+    setModel(model_);
 
     iapList_ = std::move(iapList);
 }
 
 googleapis::util::Status Self::patch(ClientHelper* helper) {
-    googleapis::util::Status status;
-    for (auto&& value : *iapList_->mutable_inappproduct().MutableStorage()) {
-        google_androidpublisher_api::InAppProduct product(
-            std::addressof(value));
-        std::unique_ptr<google_androidpublisher_api::InAppProduct> ptr(
-            google_androidpublisher_api::InAppProduct::New());
-        for (int i = 0; i < 3; ++i) {
-            status = helper->iap_patch(product.get_package_name().as_string(),
-                                       product.get_sku().as_string(), product,
-                                       ptr.get());
-            if (status.ok()) {
-                break;
+    auto status = googleapis::util::Status();
+    int productCount = iapList_->mutable_inappproduct().size();
+    for (int i = 0; i < productCount; ++i) {
+        auto&& oldProduct = iapList_->mutable_inappproduct().mutable_get(i);
+        auto&& currentProduct = model_->getItemAt(i);
+        if (not(oldProduct == currentProduct)) {
+            std::unique_ptr<google_androidpublisher_api::InAppProduct> ptr(
+                google_androidpublisher_api::InAppProduct::New());
+            for (int i = 0; i < 3; ++i) {
+                status = helper->iap_patch(
+                    currentProduct.get_package_name().as_string(),
+                    currentProduct.get_sku().as_string(), currentProduct,
+                    ptr.get());
+                if (status.ok()) {
+                    break;
+                }
             }
+            if (not status.ok()) {
+                return status;
+            }
+            currentProduct.CopyFrom(*ptr);
+            oldProduct.CopyFrom(*ptr);
         }
-        if (not status.ok()) {
-            return status;
-        }
-        product.CopyFrom(*ptr);
     }
     return status;
 }

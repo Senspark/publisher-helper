@@ -45,12 +45,12 @@ QVariant Self::data(const QModelIndex& index, int role) const {
     if (role == Qt::ItemDataRole::DisplayRole ||
         role == Qt::ItemDataRole::EditRole) {
         auto row = index.row();
-        auto&& item = items_.at(static_cast<std::size_t>(row));
+        auto&& item = getItemAt(row);
         auto col = index.column();
         if (col == 0) {
-            return QString::fromStdString(item->get_sku().as_string());
+            return QString::fromStdString(item.get_sku().as_string());
         }
-        auto&& listing = item->get_listings();
+        auto&& listing = item.get_listings();
         auto&& localization = localizations_.at(col - 1);
         std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
             google_androidpublisher_api::InAppProductListing::New());
@@ -75,10 +75,10 @@ bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
             Q_ASSERT(false);
         }
         auto row = index.row();
-        auto&& item = items_.at(static_cast<std::size_t>(row));
+        auto&& item = getItemAt(row);
         auto col = index.column();
         Q_ASSERT(col != 0);
-        auto&& listing = item->mutable_listings();
+        auto&& listing = item.mutable_listings();
         auto&& localization = localizations_.at(col - 1);
         std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
             google_androidpublisher_api::InAppProductListing::New());
@@ -156,4 +156,12 @@ Qt::ItemFlags Self::flags(const QModelIndex& index) const {
         flags |= Qt::ItemFlag::ItemIsEditable;
     }
     return flags;
+}
+
+google_androidpublisher_api::InAppProduct& Self::getItemAt(int i) {
+    return *items_.at(static_cast<std::size_t>(i));
+}
+
+const google_androidpublisher_api::InAppProduct& Self::getItemAt(int i) const {
+    return *items_.at(static_cast<std::size_t>(i));
 }
