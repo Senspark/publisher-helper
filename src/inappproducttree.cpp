@@ -11,6 +11,7 @@ using Self = InAppProductTree;
 Self::InAppProductTree(QWidget* parent)
     : Super(parent) {
     header()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+    setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
 }
 
 Self::~InAppProductTree() {}

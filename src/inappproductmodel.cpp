@@ -39,7 +39,8 @@ QVariant Self::data(const QModelIndex& index, int role) const {
     if (not index.isValid()) {
         return QVariant();
     }
-    if (role == Qt::DisplayRole) {
+    if (role == Qt::ItemDataRole::DisplayRole ||
+        role == Qt::ItemDataRole::EditRole) {
         auto row = index.row();
         auto&& item = products_.at(static_cast<std::size_t>(row));
         auto col = index.column();
@@ -56,6 +57,50 @@ QVariant Self::data(const QModelIndex& index, int role) const {
         return "(null)";
     }
     return QVariant();
+}
+
+bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
+    if (not index.isValid()) {
+        return false;
+    }
+    if (role == Qt::ItemDataRole::EditRole) {
+        auto oldValue = data(index, role);
+        if (oldValue == value) {
+            return false;
+        }
+        if (value.isNull()) {
+            Q_ASSERT(false);
+        }
+        auto row = index.row();
+        auto&& item = products_.at(static_cast<std::size_t>(row));
+        auto col = index.column();
+        Q_ASSERT(col != 0);
+        auto&& listing = item.mutable_listings();
+        auto&& localization = localizations_.at(col - 1);
+        std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
+            google_androidpublisher_api::InAppProductListing::New());
+        if (listing.get(localization.toStdString().c_str(), ptr.get())) {
+            // Exist.
+            if (value.toString().isEmpty()) {
+                ptr->clear_title();
+            } else {
+                ptr->set_title(value.toString().toStdString());
+            }
+        } else {
+            // Doesn't exist.
+            ptr->clear_title();
+            ptr->clear_description();
+            if (value.toString().isEmpty()) {
+                //
+            } else {
+                ptr->set_title(value.toString().toStdString());
+            }
+        }
+        listing.put(localization.toStdString().c_str(), *ptr);
+        dataChanged(index, index);
+        return true;
+    }
+    return false;
 }
 
 QVariant Self::headerData(int section, Qt::Orientation orientation,
@@ -97,4 +142,15 @@ int Self::rowCount(const QModelIndex& parent) const {
 int Self::columnCount(const QModelIndex& parent) const {
     Q_UNUSED(parent);
     return localizations_.size() + 1;
+}
+
+Qt::ItemFlags Self::flags(const QModelIndex& index) const {
+    if (not index.isValid()) {
+        return Qt::ItemFlag::NoItemFlags;
+    }
+    auto flags = Qt::ItemFlag::ItemIsSelectable | Qt::ItemFlag::ItemIsEnabled;
+    if (index.column() != 0) {
+        flags |= Qt::ItemFlag::ItemIsEditable;
+    }
+    return flags;
 }
