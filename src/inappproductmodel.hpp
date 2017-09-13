@@ -45,7 +45,8 @@ public:
 
 private:
     QVector<QString> localizations_;
-    std::vector<google_androidpublisher_api::InAppProduct> products_;
+    std::vector<std::unique_ptr<google_androidpublisher_api::InAppProduct>>
+        items_;
 };
 
 #endif // INAPPPRODUCTMODEL_HPP

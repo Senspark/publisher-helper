@@ -17,17 +17,20 @@ Self::~InAppProductModel() {}
 void Self::load(
     std::vector<google_androidpublisher_api::InAppProduct>& products) {
     for (auto&& product : products) {
-        products_.emplace_back(product.MutableStorage());
+        std::unique_ptr<google_androidpublisher_api::InAppProduct> item(
+            google_androidpublisher_api::InAppProduct::New());
+        item->CopyFrom(product);
+        items_.push_back(std::move(item));
     }
 
     QSet<QString> localizations;
-    for (auto&& product : products_) {
+    for (auto&& item : items_) {
 
         // std::ostringstream os;
         // product.StoreToJsonStream(&os);
         // qDebug() << QString::fromStdString(os.str());
 
-        auto&& listings = product.get_listings();
+        auto&& listings = item->get_listings();
         for (auto i = listings.begin(); i != listings.end(); ++i) {
             localizations.insert(QString::fromStdString(i.key()));
         }
@@ -42,12 +45,12 @@ QVariant Self::data(const QModelIndex& index, int role) const {
     if (role == Qt::ItemDataRole::DisplayRole ||
         role == Qt::ItemDataRole::EditRole) {
         auto row = index.row();
-        auto&& item = products_.at(static_cast<std::size_t>(row));
+        auto&& item = items_.at(static_cast<std::size_t>(row));
         auto col = index.column();
         if (col == 0) {
-            return QString::fromStdString(item.get_sku().as_string());
+            return QString::fromStdString(item->get_sku().as_string());
         }
-        auto&& listing = item.get_listings();
+        auto&& listing = item->get_listings();
         auto&& localization = localizations_.at(col - 1);
         std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
             google_androidpublisher_api::InAppProductListing::New());
@@ -72,10 +75,10 @@ bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
             Q_ASSERT(false);
         }
         auto row = index.row();
-        auto&& item = products_.at(static_cast<std::size_t>(row));
+        auto&& item = items_.at(static_cast<std::size_t>(row));
         auto col = index.column();
         Q_ASSERT(col != 0);
-        auto&& listing = item.mutable_listings();
+        auto&& listing = item->mutable_listings();
         auto&& localization = localizations_.at(col - 1);
         std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
             google_androidpublisher_api::InAppProductListing::New());
@@ -119,7 +122,7 @@ QModelIndex Self::index(int row, int column, const QModelIndex& parent) const {
     if (not hasIndex(row, column, parent)) {
         return QModelIndex();
     }
-    if (row > static_cast<int>(products_.size())) {
+    if (row > static_cast<int>(items_.size())) {
         return QModelIndex();
     }
     return createIndex(row, column, nullptr);
@@ -136,7 +139,7 @@ int Self::rowCount(const QModelIndex& parent) const {
     if (parent.isValid()) {
         return 0;
     }
-    return static_cast<int>(products_.size());
+    return static_cast<int>(items_.size());
 }
 
 int Self::columnCount(const QModelIndex& parent) const {
