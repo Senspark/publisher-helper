@@ -252,7 +252,7 @@ Qt::ItemFlags Self::flags(const QModelIndex& index) const {
     }
     // 2nd level.
     flags |= Qt::ItemFlag::ItemIsSelectable;
-    if (index.column() == 0) {
+    if (index.column() != 0) {
         flags |= Qt::ItemFlag::ItemIsEditable;
     }
     return flags;
