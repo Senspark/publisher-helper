@@ -29,12 +29,36 @@ Self::~InAppProductTree() {}
 void Self::showContextMenu(const QPoint& position) {
     QMenu menu;
 
-    auto deleteAction = new QAction("Delete", this);
-    deleteAction->setEnabled(not selectedIndexes().isEmpty());
-    menu.addAction(deleteAction);
-    menu.connect(deleteAction, &QAction::triggered, [this] {
-        dataHelper_->pushGroup();
+    auto expandAction = new QAction("Expand", this);
+    menu.addAction(expandAction);
+    menu.connect(expandAction, &QAction::triggered, [this] {
         for (auto&& index : selectedIndexes()) {
+            expand(index);
+        }
+    });
+
+    auto collapseAction = new QAction("Collapse", this);
+    menu.addAction(collapseAction);
+    menu.connect(collapseAction, &QAction::triggered, [this] {
+        for (auto&& index : selectedIndexes()) {
+            collapse(index);
+        }
+    });
+
+    auto deleteAction = new QAction("Delete", this);
+
+    QModelIndexList removableIndexes;
+    for (auto&& index : selectedIndexes()) {
+        if (model_->flags(index).testFlag(Qt::ItemFlag::ItemIsEditable)) {
+            removableIndexes << index;
+        }
+    }
+
+    deleteAction->setEnabled(not removableIndexes.isEmpty());
+    menu.addAction(deleteAction);
+    menu.connect(deleteAction, &QAction::triggered, [this, removableIndexes] {
+        dataHelper_->pushGroup();
+        for (auto&& index : removableIndexes) {
             model_->setData(index, "", Qt::ItemDataRole::EditRole);
         }
         dataHelper_->popGroup();
