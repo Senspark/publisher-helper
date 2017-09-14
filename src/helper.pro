@@ -45,14 +45,16 @@ SOURCES += \
     clienthelper.cpp \
     inappproducttree.cpp \
     inappproductmodel.cpp \
-    inappproductmodelid.cpp
+    inappproductmodelid.cpp \
+    datastatehelper.cpp
 
 HEADERS += \
     mainwindow.hpp \
     clienthelper.hpp \
     inappproducttree.hpp \
     inappproductmodel.hpp \
-    inappproductmodelid.hpp
+    inappproductmodelid.hpp \
+    datastatehelper.hpp
 
 FORMS += \
     mainwindow.ui

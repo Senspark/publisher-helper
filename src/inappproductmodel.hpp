@@ -7,6 +7,8 @@ namespace google_androidpublisher_api {
 class InAppProduct;
 } // namespace google_androidpublisher_api
 
+class DataStateHelper;
+
 class InAppProductModel : public QAbstractItemModel {
     Q_OBJECT
 
@@ -18,6 +20,8 @@ public:
     explicit InAppProductModel(QObject* parent = nullptr);
 
     virtual ~InAppProductModel() override;
+
+    void setDataStateHelper(DataStateHelper* helper);
 
     void load(std::vector<google_androidpublisher_api::InAppProduct>& products);
 
@@ -47,7 +51,12 @@ public:
 
     const google_androidpublisher_api::InAppProduct& getItemAt(int i) const;
 
+    const QVector<QString>& getLocalizations() const;
+
+    bool addLocalization(const QString& localization);
+
 private:
+    DataStateHelper* dataHelper_;
     QVector<QString> localizations_;
     std::vector<std::unique_ptr<google_androidpublisher_api::InAppProduct>>
         items_;

@@ -1,6 +1,7 @@
 #include <ciso646>
 #include <sstream>
 
+#include "datastatehelper.hpp"
 #include "inappproductmodel.hpp"
 #include "inappproductmodelid.hpp"
 
@@ -15,6 +16,11 @@ Self::InAppProductModel(QObject* parent)
     : Super(parent) {}
 
 Self::~InAppProductModel() {}
+
+void Self::setDataStateHelper(DataStateHelper* helper) {
+    dataHelper_ = helper;
+}
+
 void Self::load(
     std::vector<google_androidpublisher_api::InAppProduct>& products) {
     for (auto&& product : products) {
@@ -110,6 +116,7 @@ bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
             // (null) is equal to an empty string.
             return setData(index, "", role);
         }
+        dataHelper_->saveState(index, oldValue, value, role);
         auto&& item = getItemAt(parent.row());
         Q_ASSERT(index.column() != 0);
         auto&& listing = item.mutable_listings();
@@ -264,4 +271,16 @@ google_androidpublisher_api::InAppProduct& Self::getItemAt(int i) {
 
 const google_androidpublisher_api::InAppProduct& Self::getItemAt(int i) const {
     return *items_.at(static_cast<std::size_t>(i));
+}
+
+const QVector<QString>& Self::getLocalizations() const {
+    return localizations_;
+}
+
+bool Self::addLocalization(const QString& localization) {
+    if (getLocalizations().contains(localization)) {
+        return false;
+    }
+    localizations_.append(localization);
+    return true;
 }

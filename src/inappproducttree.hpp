@@ -6,6 +6,7 @@
 #include <google/androidpublisher_api/inappproducts_list_response.h>
 
 class ClientHelper;
+class DataStateHelper;
 class InAppProductModel;
 
 class InAppProductTree : public QTreeView {
@@ -28,11 +29,18 @@ public:
 
     void showDescription();
 
+    bool undo();
+
+    bool redo();
+
 protected:
     void buildColumns();
 
+    void showContextMenu(const QPoint& position);
+
 private:
     InAppProductModel* model_;
+    std::unique_ptr<DataStateHelper> dataHelper_;
     std::unique_ptr<google_androidpublisher_api::InappproductsListResponse>
         iapList_;
 };

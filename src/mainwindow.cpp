@@ -84,10 +84,16 @@ Self::MainWindow(QWidget* parent)
                                   QMessageBox::Button::Ok);
             return;
         }
-        QMessageBox::information(this, "ˆInfo",
+        QMessageBox::information(this, "Info",
                                  "Operation has completed successfully!",
                                  QMessageBox::Button::Ok);
     });
+
+    connect(ui_->undoAction, &QAction::triggered,
+            [this] { ui_->inAppProductTree->undo(); });
+
+    connect(ui_->redoAction, &QAction::triggered,
+            [this] { ui_->inAppProductTree->redo(); });
 
     updateJsonFilePath();
 }
