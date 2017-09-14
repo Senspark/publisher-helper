@@ -15,7 +15,7 @@ using Self = InAppProductTree;
 
 Self::InAppProductTree(QWidget* parent)
     : Super(parent) {
-    header()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+    header()->setSectionResizeMode(QHeaderView::ResizeMode::Interactive);
     setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
     setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
     setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
@@ -137,6 +137,9 @@ void Self::setInAppProducts(
     model_->addLocalization("zu");
 
     setModel(model_);
+
+    header()->setSectionResizeMode(0,
+                                   QHeaderView::ResizeMode::ResizeToContents);
 
     iapList_ = std::move(iapList);
 }
