@@ -19,6 +19,7 @@ Self::InAppProductTree(QWidget* parent)
     setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
     setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
     setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+    setUniformRowHeights(true);
 
     connect(this, &Self::customContextMenuRequested,
             [this](const QPoint& position) { showContextMenu(position); });
@@ -27,13 +28,19 @@ Self::InAppProductTree(QWidget* parent)
 Self::~InAppProductTree() {}
 
 void Self::showContextMenu(const QPoint& position) {
+    if (selectedIndexes().isEmpty()) {
+        return;
+    }
+
     QMenu menu;
 
     auto expandAction = new QAction("Expand rows", this);
     menu.addAction(expandAction);
     menu.connect(expandAction, &QAction::triggered, [this] {
         for (auto&& index : selectedIndexes()) {
-            expand(index);
+            if (index.column() == 0) {
+                expand(index);
+            }
         }
     });
 
@@ -41,7 +48,9 @@ void Self::showContextMenu(const QPoint& position) {
     menu.addAction(collapseAction);
     menu.connect(collapseAction, &QAction::triggered, [this] {
         for (auto&& index : selectedIndexes()) {
-            collapse(index);
+            if (index.column() == 0) {
+                collapse(index);
+            }
         }
     });
 
@@ -55,7 +64,7 @@ void Self::showContextMenu(const QPoint& position) {
 
     QModelIndexList removableIndexes;
     for (auto&& index : selectedIndexes()) {
-        if (model_->flags(index).testFlag(Qt::ItemFlag::itemiseditable)) {
+        if (model_->flags(index).testFlag(Qt::ItemFlag::ItemIsEditable)) {
             removableIndexes << index;
         }
     }
@@ -87,85 +96,6 @@ void Self::setInAppProducts(
     model_ = new InAppProductModel();
     model_->load(products);
     model_->setDataStateHelper(dataHelper_.get());
-
-    model_->addLocalization("af");
-    model_->addLocalization("am");
-    model_->addLocalization("ar");
-    model_->addLocalization("hy-AM");
-    model_->addLocalization("az-AZ");
-    model_->addLocalization("bn-BD");
-    model_->addLocalization("eu-ES");
-    model_->addLocalization("be");
-    model_->addLocalization("bg");
-    model_->addLocalization("my-MM");
-    model_->addLocalization("ca");
-    model_->addLocalization("zh-HK");
-    model_->addLocalization("zh-CN");
-    model_->addLocalization("zh-TW");
-    model_->addLocalization("hr");
-    model_->addLocalization("cs-CZ");
-    model_->addLocalization("da-DK");
-    model_->addLocalization("nl-NL");
-    model_->addLocalization("en-AU");
-    model_->addLocalization("en-IN");
-    model_->addLocalization("en-SG");
-    model_->addLocalization("en-ZA");
-    model_->addLocalization("en-CA");
-    model_->addLocalization("en-GB");
-    model_->addLocalization("en-US");
-    model_->addLocalization("et");
-    model_->addLocalization("fil");
-    model_->addLocalization("fi-FI");
-    model_->addLocalization("fr-FR");
-    model_->addLocalization("fr-CA");
-    model_->addLocalization("gl-ES");
-    model_->addLocalization("ka-GE");
-    model_->addLocalization("de-DE");
-    model_->addLocalization("el-GR");
-    model_->addLocalization("iw-IL");
-    model_->addLocalization("hi-IN");
-    model_->addLocalization("hu-HU");
-    model_->addLocalization("is-IS");
-    model_->addLocalization("id");
-    model_->addLocalization("it-IT");
-    model_->addLocalization("ja-JP");
-    model_->addLocalization("kn-IN");
-    model_->addLocalization("km-KH");
-    model_->addLocalization("ko-KR");
-    model_->addLocalization("ky-KG");
-    model_->addLocalization("lo-LA");
-    model_->addLocalization("lv");
-    model_->addLocalization("lt");
-    model_->addLocalization("mk-MK");
-    model_->addLocalization("ms");
-    model_->addLocalization("ml-IN");
-    model_->addLocalization("mr-IN");
-    model_->addLocalization("mn-MN");
-    model_->addLocalization("ne-NP");
-    model_->addLocalization("no-NO");
-    model_->addLocalization("fa");
-    model_->addLocalization("pl-PL");
-    model_->addLocalization("pt-BR");
-    model_->addLocalization("pt-PT");
-    model_->addLocalization("ro");
-    model_->addLocalization("rm");
-    model_->addLocalization("ru-RU");
-    model_->addLocalization("sr");
-    model_->addLocalization("si-LK");
-    model_->addLocalization("sk");
-    model_->addLocalization("sl");
-    model_->addLocalization("es-419");
-    model_->addLocalization("es-ES");
-    model_->addLocalization("es-US");
-    model_->addLocalization("sw");
-    model_->addLocalization("sv-SE");
-    model_->addLocalization("ta-IN");
-    model_->addLocalization("te-IN");
-    model_->addLocalization("th");
-    model_->addLocalization("tr-TR");
-    model_->addLocalization("uk");
-    model_->addLocalization("vi");
-    model_->addLocalization("zu");
 
     setModel(model_);
 

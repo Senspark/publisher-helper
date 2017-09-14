@@ -8,6 +8,7 @@ class InAppProduct;
 } // namespace google_androidpublisher_api
 
 class DataStateHelper;
+class Localization;
 
 class InAppProductModel : public QAbstractItemModel {
     Q_OBJECT
@@ -51,13 +52,13 @@ public:
 
     const google_androidpublisher_api::InAppProduct& getItemAt(int i) const;
 
-    const QVector<QString>& getLocalizations() const;
+    const QVector<Localization>& getLocalizations() const;
 
-    bool addLocalization(const QString& localization);
+    bool addLocalization(const Localization& localization);
 
 private:
     DataStateHelper* dataHelper_;
-    QVector<QString> localizations_;
+    QVector<Localization> localizations_;
     std::vector<std::unique_ptr<google_androidpublisher_api::InAppProduct>>
         items_;
 };

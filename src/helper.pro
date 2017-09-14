@@ -46,7 +46,8 @@ SOURCES += \
     inappproducttree.cpp \
     inappproductmodel.cpp \
     inappproductmodelid.cpp \
-    datastatehelper.cpp
+    datastatehelper.cpp \
+    localization.cpp
 
 HEADERS += \
     mainwindow.hpp \
@@ -54,7 +55,8 @@ HEADERS += \
     inappproducttree.hpp \
     inappproductmodel.hpp \
     inappproductmodelid.hpp \
-    datastatehelper.hpp
+    datastatehelper.hpp \
+    localization.hpp
 
 FORMS += \
     mainwindow.ui

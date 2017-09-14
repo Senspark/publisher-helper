@@ -4,6 +4,7 @@
 #include "datastatehelper.hpp"
 #include "inappproductmodel.hpp"
 #include "inappproductmodelid.hpp"
+#include "localization.hpp"
 
 #include <QDebug>
 #include <QSet>
@@ -42,7 +43,22 @@ void Self::load(
             localizations.insert(QString::fromStdString(i.key()));
         }
     }
-    localizations_ = localizations.toList().toVector();
+
+    auto all = Localization::All();
+    int i = 0;
+
+    for (auto&& code : localizations) {
+        bool found = false;
+        while (i < all.size()) {
+            if (code == all.at(i).iso_name()) {
+                addLocalization(all.at(i));
+                found = true;
+                break;
+            }
+            ++i;
+        }
+        Q_ASSERT(found);
+    }
 }
 
 QVariant Self::data(const QModelIndex& index, int role) const {
@@ -78,7 +94,8 @@ QVariant Self::data(const QModelIndex& index, int role) const {
         std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
             google_androidpublisher_api::InAppProductListing::New());
         QString text = "(null)";
-        if (listing.get(localization.toStdString().c_str(), ptr.get())) {
+        if (listing.get(localization.iso_name().toStdString().c_str(),
+                        ptr.get())) {
             if (index.row() == 0) {
                 text = QString::fromStdString(ptr->get_title().as_string());
             } else if (index.row() == 1) {
@@ -123,7 +140,8 @@ bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
         auto&& localization = localizations_.at(index.column() - 1);
         std::unique_ptr<google_androidpublisher_api::InAppProductListing> ptr(
             google_androidpublisher_api::InAppProductListing::New());
-        if (not listing.get(localization.toStdString().c_str(), ptr.get())) {
+        if (not listing.get(localization.iso_name().toStdString().c_str(),
+                            ptr.get())) {
             ptr->clear_title();
             ptr->clear_description();
         }
@@ -147,7 +165,7 @@ bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
                           google_androidpublisher_api::InAppProductListing>(
                 google_androidpublisher_api::InAppProductListing::New()));
         }
-        listing.put(localization.toStdString().c_str(), *ptr);
+        listing.put(localization.iso_name().toStdString().c_str(), *ptr);
         dataChanged(index, index);
         return true;
     }
@@ -160,7 +178,10 @@ QVariant Self::headerData(int section, Qt::Orientation orientation,
         if (section == 0) {
             return "SKU";
         }
-        return localizations_.at(section - 1);
+        auto&& localization = localizations_.at(section - 1);
+        return QString("%1\n%2")
+            .arg(localization.name())
+            .arg(localization.iso_name());
     }
     Q_UNUSED(orientation);
     return QVariant();
@@ -273,11 +294,11 @@ const google_androidpublisher_api::InAppProduct& Self::getItemAt(int i) const {
     return *items_.at(static_cast<std::size_t>(i));
 }
 
-const QVector<QString>& Self::getLocalizations() const {
+const QVector<Localization>& Self::getLocalizations() const {
     return localizations_;
 }
 
-bool Self::addLocalization(const QString& localization) {
+bool Self::addLocalization(const Localization& localization) {
     if (getLocalizations().contains(localization)) {
         return false;
     }
