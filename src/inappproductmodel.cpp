@@ -236,11 +236,23 @@ int Self::columnCount(const QModelIndex& parent) const {
 }
 
 Qt::ItemFlags Self::flags(const QModelIndex& index) const {
+    QFlags<Qt::ItemFlag> flags = Qt::ItemFlag::NoItemFlags;
     if (not index.isValid()) {
-        return Qt::ItemFlag::NoItemFlags;
+        return flags;
     }
-    auto flags = Qt::ItemFlag::ItemIsSelectable | Qt::ItemFlag::ItemIsEnabled;
-    if (index.column() != 0) {
+    flags |= Qt::ItemFlag::ItemIsEnabled;
+    auto parent = index.parent();
+    if (not parent.isValid()) {
+        // 1st level.
+        if (index.column() != 0) {
+            return flags;
+        }
+        flags |= Qt::ItemFlag::ItemIsSelectable;
+        return flags;
+    }
+    // 2nd level.
+    flags |= Qt::ItemFlag::ItemIsSelectable;
+    if (index.column() == 0) {
         flags |= Qt::ItemFlag::ItemIsEditable;
     }
     return flags;
