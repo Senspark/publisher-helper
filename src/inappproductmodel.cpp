@@ -135,6 +135,11 @@ bool Self::setData(const QModelIndex& index, const QVariant& value, int role) {
         } else {
             Q_ASSERT(false);
         }
+        if (not ptr->has_title() && not ptr->has_description()) {
+            ptr->CopyFrom(*std::unique_ptr<
+                          google_androidpublisher_api::InAppProductListing>(
+                google_androidpublisher_api::InAppProductListing::New()));
+        }
         listing.put(localization.toStdString().c_str(), *ptr);
         dataChanged(index, index);
         return true;
