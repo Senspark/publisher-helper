@@ -47,7 +47,9 @@ SOURCES += \
     inappproductmodel.cpp \
     inappproductmodelid.cpp \
     datastatehelper.cpp \
-    localization.cpp
+    localization.cpp \
+    selectcolumndialog.cpp \
+    localizationlist.cpp
 
 HEADERS += \
     mainwindow.hpp \
@@ -56,7 +58,10 @@ HEADERS += \
     inappproductmodel.hpp \
     inappproductmodelid.hpp \
     datastatehelper.hpp \
-    localization.hpp
+    localization.hpp \
+    selectcolumndialog.hpp \
+    localizationlist.hpp
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    selectcolumndialog.ui

@@ -10,6 +10,8 @@ class DataStateHelper;
 class InAppProductModel;
 
 class InAppProductTree : public QTreeView {
+    Q_OBJECT
+
 private:
     using Self = InAppProductTree;
     using Super = QTreeView;

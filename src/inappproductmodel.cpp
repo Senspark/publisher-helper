@@ -298,6 +298,11 @@ const QVector<Localization>& Self::getLocalizations() const {
     return localizations_;
 }
 
+void Self::setLocalizations(const QVector<Localization>& localizations) {
+    localizations_ = localizations;
+    headerDataChanged(Qt::Orientation::Horizontal, 1, localizations.size());
+}
+
 bool Self::addLocalization(const Localization& localization) {
     if (getLocalizations().contains(localization)) {
         return false;

@@ -5,6 +5,8 @@
 #include "datastatehelper.hpp"
 #include "inappproductmodel.hpp"
 #include "inappproducttree.hpp"
+#include "localization.hpp"
+#include "selectcolumndialog.hpp"
 
 #include <QAction>
 #include <QDebug>
@@ -52,6 +54,33 @@ void Self::showContextMenu(const QPoint& position) {
                 collapse(index);
             }
         }
+    });
+
+    auto hideColumnAction = new QAction("Hide columns");
+    menu.addAction(hideColumnAction);
+    menu.connect(hideColumnAction, &QAction::triggered, [this] {
+        QSet<int> toHideColumns;
+        for (auto&& index : selectedIndexes()) {
+            if (index.column() != 0) {
+                toHideColumns.insert(index.column());
+            }
+        }
+        for (auto iter = toHideColumns.rbegin(); iter != toHideColumns.rend();
+             ++iter) {
+            hideColumn(*iter);
+        }
+    });
+
+    auto showColumnAction = new QAction("Select columns...");
+    menu.addAction(showColumnAction);
+    menu.connect(showColumnAction, &QAction::triggered, [this] {
+        SelectColumnDialog dialog(this);
+        dialog.setSelectedLocalizations(model_->getLocalizations());
+        connect(&dialog, &SelectColumnDialog::accepted, [this, &dialog] {
+            auto selectedLocalizations = dialog.selectedLocalizations();
+            model_->setLocalizations(selectedLocalizations);            
+        });
+        dialog.exec();
     });
 
     auto resizeColumnAction = new QAction("Resize columns to contents");

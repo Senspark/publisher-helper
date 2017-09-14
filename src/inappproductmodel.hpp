@@ -54,6 +54,8 @@ public:
 
     const QVector<Localization>& getLocalizations() const;
 
+    void setLocalizations(const QVector<Localization>& localizations);
+
     bool addLocalization(const Localization& localization);
 
 private:

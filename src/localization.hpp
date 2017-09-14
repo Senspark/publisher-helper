@@ -1,6 +1,7 @@
 #ifndef LOCALIZATION_HPP
 #define LOCALIZATION_HPP
 
+#include <QMetaClassInfo>
 #include <QString>
 #include <QVector>
 
@@ -105,5 +106,7 @@ private:
     QString name_;
     QString iso_name_;
 };
+
+Q_DECLARE_METATYPE(Localization);
 
 #endif // LOCALIZATION_HPP
