@@ -29,7 +29,7 @@ Self::~InAppProductTree() {}
 void Self::showContextMenu(const QPoint& position) {
     QMenu menu;
 
-    auto expandAction = new QAction("Expand", this);
+    auto expandAction = new QAction("Expand rows", this);
     menu.addAction(expandAction);
     menu.connect(expandAction, &QAction::triggered, [this] {
         for (auto&& index : selectedIndexes()) {
@@ -37,7 +37,7 @@ void Self::showContextMenu(const QPoint& position) {
         }
     });
 
-    auto collapseAction = new QAction("Collapse", this);
+    auto collapseAction = new QAction("Collapse rows", this);
     menu.addAction(collapseAction);
     menu.connect(collapseAction, &QAction::triggered, [this] {
         for (auto&& index : selectedIndexes()) {
@@ -45,15 +45,22 @@ void Self::showContextMenu(const QPoint& position) {
         }
     });
 
-    auto deleteAction = new QAction("Delete", this);
+    auto resizeColumnAction = new QAction("Resize columns to contents");
+    menu.addAction(resizeColumnAction);
+    menu.connect(resizeColumnAction, &QAction::triggered, [this] {
+        for (auto&& index : selectedIndexes()) {
+            resizeColumnToContents(index.column());
+        }
+    });
 
     QModelIndexList removableIndexes;
     for (auto&& index : selectedIndexes()) {
-        if (model_->flags(index).testFlag(Qt::ItemFlag::ItemIsEditable)) {
+        if (model_->flags(index).testFlag(Qt::ItemFlag::itemiseditable)) {
             removableIndexes << index;
         }
     }
 
+    auto deleteAction = new QAction("Delete cells", this);
     deleteAction->setEnabled(not removableIndexes.isEmpty());
     menu.addAction(deleteAction);
     menu.connect(deleteAction, &QAction::triggered, [this, removableIndexes] {
