@@ -58,6 +58,12 @@ public:
 
     bool addLocalization(const Localization& localization);
 
+    QString getTitleText(const QString& sku,
+                         const Localization& localization) const;
+
+    QString getDescriptionText(const QString& sku,
+                               const Localization& localization) const;
+
 private:
     DataStateHelper* dataHelper_;
     QVector<Localization> localizations_;

@@ -170,13 +170,26 @@ const QString& Self::iso_name() const {
     return iso_name_;
 }
 
+const QString& Self::google_translate_code() const {
+    return google_translate_code_;
+}
+
 Self::Localization() {
     Q_ASSERT(false);
 }
 
 Self::Localization(const QString& name, const QString& iso_name)
     : name_(name)
-    , iso_name_(iso_name) {}
+    , iso_name_(iso_name) {
+    if (iso_name == "zh-CN" || iso_name == "zh-TW") {
+        google_translate_code_ = iso_name;
+    } else if (iso_name.contains('-')) {
+        auto i = iso_name.indexOf('-');
+        google_translate_code_ = iso_name.left(i);
+    } else {
+        google_translate_code_ = iso_name;
+    }
+}
 
 bool Self::operator==(const Self& other) const {
     return iso_name() == other.iso_name();

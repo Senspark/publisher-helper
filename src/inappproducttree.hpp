@@ -8,6 +8,7 @@
 class ClientHelper;
 class DataStateHelper;
 class InAppProductModel;
+class Translator;
 
 class InAppProductTree : public QTreeView {
     Q_OBJECT
@@ -27,22 +28,17 @@ public:
 
     googleapis::util::Status patch(ClientHelper* helper);
 
-    void showTitle();
-
-    void showDescription();
-
     bool undo();
 
     bool redo();
 
 protected:
-    void buildColumns();
-
     void showContextMenu(const QPoint& position);
 
 private:
     InAppProductModel* model_;
     std::unique_ptr<DataStateHelper> dataHelper_;
+    std::unique_ptr<Translator> translator_;
     std::unique_ptr<google_androidpublisher_api::InappproductsListResponse>
         iapList_;
 };

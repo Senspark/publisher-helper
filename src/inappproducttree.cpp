@@ -7,11 +7,13 @@
 #include "inappproducttree.hpp"
 #include "localization.hpp"
 #include "selectcolumndialog.hpp"
+#include "translator.hpp"
 
 #include <QAction>
 #include <QDebug>
 #include <QHeaderView>
 #include <QMenu>
+#include <QProgressDialog>
 
 using Self = InAppProductTree;
 
@@ -78,7 +80,7 @@ void Self::showContextMenu(const QPoint& position) {
         dialog.setSelectedLocalizations(model_->getLocalizations());
         connect(&dialog, &SelectColumnDialog::accepted, [this, &dialog] {
             auto selectedLocalizations = dialog.selectedLocalizations();
-            model_->setLocalizations(selectedLocalizations);            
+            model_->setLocalizations(selectedLocalizations);
         });
         dialog.exec();
     });
@@ -109,6 +111,43 @@ void Self::showContextMenu(const QPoint& position) {
         dataHelper_->popGroup();
     });
 
+    auto translateAction = new QAction("Translate from en-US", this);
+    translateAction->setEnabled(not removableIndexes.isEmpty());
+    menu.addAction(translateAction);
+    menu.connect(
+        translateAction, &QAction::triggered, [this, removableIndexes] {
+            QProgressDialog dialog(this);
+            dialog.setMinimumDuration(0);
+            dialog.setMaximum(removableIndexes.size());
+            dialog.setValue(0);
+            dialog.setCancelButton(nullptr);
+            dataHelper_->pushGroup();
+            for (auto&& index : removableIndexes) {
+                auto parent = index.parent();
+                Q_ASSERT(parent.isValid());
+                auto&& item = model_->getItemAt(parent.row());
+                auto sku = QString::fromStdString(item.get_sku().as_string());
+                auto&& localization =
+                    model_->getLocalizations().at(index.column() - 1);
+                auto englishText =
+                    (index.row() == 0
+                         ? model_->getTitleText(sku, Localization::English_US)
+                         : model_->getDescriptionText(
+                               sku, Localization::English_US));
+                translator_->translate(
+                    Localization::English_US, localization, englishText,
+                    [this, &dialog, index](const QString& content) {
+                        model_->setData(index, content,
+                                        Qt::ItemDataRole::EditRole);
+                        if (dialog.value() + 1 == dialog.maximum()) {
+                            dataHelper_->popGroup();
+                        }
+                        dialog.setValue(dialog.value() + 1);
+                    });
+            }
+            dialog.exec();
+        });
+
     menu.exec(viewport()->mapToGlobal(position));
 }
 
@@ -121,6 +160,7 @@ void Self::setInAppProducts(
     }
 
     dataHelper_ = std::make_unique<DataStateHelper>();
+    translator_ = std::make_unique<Translator>();
 
     model_ = new InAppProductModel();
     model_->load(products);
@@ -161,17 +201,6 @@ googleapis::util::Status Self::patch(ClientHelper* helper) {
     }
     return status;
 }
-
-void Self::showTitle() {
-    //
-}
-
-void Self::showDescription() {
-    // clear();
-    // buildColumns();
-}
-
-void Self::buildColumns() {}
 
 bool Self::undo() {
     if (not dataHelper_) {

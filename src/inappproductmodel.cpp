@@ -45,10 +45,9 @@ void Self::load(
     }
 
     auto all = Localization::All();
-    int i = 0;
-
     for (auto&& code : localizations) {
         bool found = false;
+        int i = 0;
         while (i < all.size()) {
             if (code == all.at(i).iso_name()) {
                 addLocalization(all.at(i));
@@ -309,4 +308,34 @@ bool Self::addLocalization(const Localization& localization) {
     }
     localizations_.append(localization);
     return true;
+}
+
+QString Self::getTitleText(const QString& sku,
+                           const Localization& localization) const {
+    auto iter = std::find_if(items_.cbegin(), items_.cend(), [sku](auto&& elt) {
+        return elt->get_sku() == sku.toStdString();
+    });
+    if (iter == items_.cend()) {
+        return "";
+    }
+    std::unique_ptr<google_androidpublisher_api::InAppProductListing> listing(
+        google_androidpublisher_api::InAppProductListing::New());
+    (*iter)->get_listings().get(localization.iso_name().toStdString().c_str(),
+                                listing.get());
+    return QString::fromStdString(listing->get_title().as_string());
+}
+
+QString Self::getDescriptionText(const QString& sku,
+                                 const Localization& localization) const {
+    auto iter = std::find_if(items_.cbegin(), items_.cend(), [sku](auto&& elt) {
+        return elt->get_sku() == sku.toStdString();
+    });
+    if (iter == items_.cend()) {
+        return "";
+    }
+    std::unique_ptr<google_androidpublisher_api::InAppProductListing> listing(
+        google_androidpublisher_api::InAppProductListing::New());
+    (*iter)->get_listings().get(localization.iso_name().toStdString().c_str(),
+                                listing.get());
+    return QString::fromStdString(listing->get_description().as_string());
 }

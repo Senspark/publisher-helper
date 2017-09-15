@@ -97,6 +97,7 @@ public:
 
     const QString& name() const;
     const QString& iso_name() const;
+    const QString& google_translate_code() const;
 
     bool operator==(const Self& other) const;
 
@@ -105,6 +106,7 @@ private:
 
     QString name_;
     QString iso_name_;
+    QString google_translate_code_;
 };
 
 Q_DECLARE_METATYPE(Localization);

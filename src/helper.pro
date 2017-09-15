@@ -1,4 +1,4 @@
-QT += core gui
+QT += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -49,7 +49,9 @@ SOURCES += \
     datastatehelper.cpp \
     localization.cpp \
     selectcolumndialog.cpp \
-    localizationlist.cpp
+    localizationlist.cpp \
+    translator.cpp \
+    downloader.cpp
 
 HEADERS += \
     mainwindow.hpp \
@@ -60,7 +62,9 @@ HEADERS += \
     datastatehelper.hpp \
     localization.hpp \
     selectcolumndialog.hpp \
-    localizationlist.hpp
+    localizationlist.hpp \
+    translator.hpp \
+    downloader.hpp
 
 FORMS += \
     mainwindow.ui \

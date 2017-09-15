@@ -73,7 +73,6 @@ Self::MainWindow(QWidget* parent)
         }
 
         ui_->inAppProductTree->setInAppProducts(std::move(data));
-        ui_->inAppProductTree->showTitle();
     });
 
     connect(ui_->patchButton, &QPushButton::clicked, [this] {
