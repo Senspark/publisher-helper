@@ -8,6 +8,7 @@
 #include "inappproducttree.hpp"
 #include "localization.hpp"
 #include "selectcolumndialog.hpp"
+#include "stringutils.hpp"
 #include "translator.hpp"
 
 #include <QAction>
@@ -151,6 +152,49 @@ void Self::showContextMenu(const QPoint& position) {
                     });
             }
             dialog.exec();
+        });
+
+    auto convertToMenu = menu.addMenu("Convert to...");
+    auto convertToLowerCaseAction = new QAction("lower case");
+    convertToMenu->addAction(convertToLowerCaseAction);
+    convertToMenu->connect(
+        convertToLowerCaseAction, &QAction::triggered,
+        [this, removableIndexes] {
+            dataHelper_->pushGroup();
+            for (auto&& index : removableIndexes) {
+                auto value = model_->data(index, Qt::ItemDataRole::DisplayRole);
+                value = StringUtils::toLowerCase(value.toString());
+                model_->setData(index, value, Qt::ItemDataRole::EditRole);
+            }
+            dataHelper_->popGroup();
+        });
+
+    auto convertToCapitalizedCaseAction = new QAction("Capitalized Case");
+    convertToMenu->addAction(convertToCapitalizedCaseAction);
+    convertToMenu->connect(
+        convertToCapitalizedCaseAction, &QAction::triggered,
+        [this, removableIndexes] {
+            dataHelper_->pushGroup();
+            for (auto&& index : removableIndexes) {
+                auto value = model_->data(index, Qt::ItemDataRole::DisplayRole);
+                value = StringUtils::toCapitalizedCase(value.toString());
+                model_->setData(index, value, Qt::ItemDataRole::EditRole);
+            }
+            dataHelper_->popGroup();
+        });
+
+    auto convertToTitleCaseAction = new QAction("Title Case");
+    convertToMenu->addAction(convertToTitleCaseAction);
+    convertToMenu->connect(
+        convertToTitleCaseAction, &QAction::triggered,
+        [this, removableIndexes] {
+            dataHelper_->pushGroup();
+            for (auto&& index : removableIndexes) {
+                auto value = model_->data(index, Qt::ItemDataRole::DisplayRole);
+                value = StringUtils::toTitleCase(value.toString());
+                model_->setData(index, value, Qt::ItemDataRole::EditRole);
+            }
+            dataHelper_->popGroup();
         });
 
     menu.exec(viewport()->mapToGlobal(position));

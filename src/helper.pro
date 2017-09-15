@@ -51,7 +51,8 @@ SOURCES += \
     selectcolumndialog.cpp \
     localizationlist.cpp \
     translator.cpp \
-    downloader.cpp
+    downloader.cpp \
+    stringutils.cpp
 
 HEADERS += \
     mainwindow.hpp \
@@ -64,7 +65,8 @@ HEADERS += \
     selectcolumndialog.hpp \
     localizationlist.hpp \
     translator.hpp \
-    downloader.hpp
+    downloader.hpp \
+    stringutils.hpp
 
 FORMS += \
     mainwindow.ui \
