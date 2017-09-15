@@ -202,34 +202,42 @@ void Self::showContextMenu(const QPoint& position) {
 
 void Self::setInAppProducts(
     std::unique_ptr<google_androidpublisher_api::InappproductsListResponse>
-        iapList) {
-    std::vector<google_androidpublisher_api::InAppProduct> products;
-    for (auto&& value : *iapList->mutable_inappproduct().MutableStorage()) {
-        products.emplace_back(std::addressof(value));
+        products) {
+    products_.clear();
+    for (auto&& value : products->mutable_inappproduct()) {
+        std::unique_ptr<google_androidpublisher_api::InAppProduct> item(
+            google_androidpublisher_api::InAppProduct::New());
+        item->CopyFrom(value);
+        products_.push_back(std::move(item));
     }
+
+    std::sort(
+        products_.begin(), products_.end(),
+        [](const std::unique_ptr<google_androidpublisher_api::InAppProduct>&
+               lhs,
+           const std::unique_ptr<google_androidpublisher_api::InAppProduct>&
+               rhs) { return lhs->get_sku() < rhs->get_sku(); });
 
     dataHelper_ = std::make_unique<DataStateHelper>();
     translator_ = std::make_unique<Translator>();
 
     model_ = new InAppProductModel();
-    model_->load(products);
+    model_->load(products_);
     model_->setDataStateHelper(dataHelper_.get());
 
     setModel(model_);
 
     header()->setSectionResizeMode(0,
                                    QHeaderView::ResizeMode::ResizeToContents);
-
-    iapList_ = std::move(iapList);
 }
 
 googleapis::util::Status Self::patch(ClientHelper* helper) {
     auto status = googleapis::util::Status();
-    int productCount = iapList_->mutable_inappproduct().size();
+    int productCount = products_.size();
     for (int i = 0; i < productCount; ++i) {
-        auto&& oldProduct = iapList_->mutable_inappproduct().mutable_get(i);
+        auto&& oldProduct = products_.at(i);
         auto&& currentProduct = model_->getItemAt(i);
-        if (not(oldProduct == currentProduct)) {
+        if (not(*oldProduct == currentProduct)) {
             std::unique_ptr<google_androidpublisher_api::InAppProduct> ptr(
                 google_androidpublisher_api::InAppProduct::New());
             for (int i = 0; i < 3; ++i) {
@@ -245,7 +253,7 @@ googleapis::util::Status Self::patch(ClientHelper* helper) {
                 return status;
             }
             currentProduct.CopyFrom(*ptr);
-            oldProduct.CopyFrom(*ptr);
+            oldProduct->CopyFrom(*ptr);
         }
     }
     return status;

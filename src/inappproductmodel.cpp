@@ -23,11 +23,12 @@ void Self::setDataStateHelper(DataStateHelper* helper) {
 }
 
 void Self::load(
-    std::vector<google_androidpublisher_api::InAppProduct>& products) {
+    const std::vector<
+        std::unique_ptr<google_androidpublisher_api::InAppProduct>>& products) {
     for (auto&& product : products) {
         std::unique_ptr<google_androidpublisher_api::InAppProduct> item(
             google_androidpublisher_api::InAppProduct::New());
-        item->CopyFrom(product);
+        item->CopyFrom(*product);
         items_.push_back(std::move(item));
     }
 

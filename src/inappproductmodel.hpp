@@ -24,7 +24,9 @@ public:
 
     void setDataStateHelper(DataStateHelper* helper);
 
-    void load(std::vector<google_androidpublisher_api::InAppProduct>& products);
+    void
+    load(const std::vector<
+         std::unique_ptr<google_androidpublisher_api::InAppProduct>>& products);
 
     virtual QVariant data(const QModelIndex& index, int role) const override;
 

@@ -24,7 +24,7 @@ public:
 
     void setInAppProducts(
         std::unique_ptr<google_androidpublisher_api::InappproductsListResponse>
-            iapList);
+            products);
 
     googleapis::util::Status patch(ClientHelper* helper);
 
@@ -39,8 +39,8 @@ private:
     InAppProductModel* model_;
     std::unique_ptr<DataStateHelper> dataHelper_;
     std::unique_ptr<Translator> translator_;
-    std::unique_ptr<google_androidpublisher_api::InappproductsListResponse>
-        iapList_;
+    std::vector<std::unique_ptr<google_androidpublisher_api::InAppProduct>>
+        products_;
 };
 
 #endif // INAPPPRODUCTTREE_HPP
