@@ -14,6 +14,10 @@ Self::~Translator() {}
 
 void Self::translate(const QString& from, const QString& to,
                      const QString& text, const Callback& callback) {
+    if (from == to) {
+        callback(text);
+    }
+
     QString formatUrl("http://translate.googleapis.com/translate_a/"
                       "single?client=gtx&sl=%1&tl=%2&dt=t&q=%3");
     auto encoded = QUrl::toPercentEncoding(text);
