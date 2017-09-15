@@ -5,6 +5,7 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 
+#include <QDateTime>
 #include <QDebug>
 #include <QFileDialog>
 #include <QJsonDocument>
@@ -18,6 +19,9 @@ Self::MainWindow(QWidget* parent)
     , ui_(new Ui::MainWindow)
     , helper_(new ClientHelper()) {
     ui_->setupUi(this);
+    setWindowTitle(QString("Publisher Helper - build %1")
+                       .arg(QDateTime::currentDateTime().toString(
+                           "MMM dd, yyyy HH:mm:ss t")));
 
     ui_->jsonInput->setReadOnly(true);
     ui_->authorizationLabel->setText("AUTHORIZATION: NO");
