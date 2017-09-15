@@ -57,6 +57,7 @@ Self::MainWindow(QWidget* parent)
         }
 
         ui_->refreshButton->setEnabled(true);
+        ui_->patchButton->setEnabled(true);
         ui_->authorizationLabel->setText("AUTHORIZATION: YES");
     });
 
@@ -102,6 +103,7 @@ Self::MainWindow(QWidget* parent)
     updateJsonFilePath();
 
     ui_->refreshButton->setEnabled(false);
+    ui_->patchButton->setEnabled(false);
 }
 
 Self::~MainWindow() {
