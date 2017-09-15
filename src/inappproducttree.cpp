@@ -1,4 +1,5 @@
 #include <ciso646>
+#include <set>
 #include <sstream>
 
 #include "clienthelper.hpp"
@@ -61,16 +62,20 @@ void Self::showContextMenu(const QPoint& position) {
     auto hideColumnAction = new QAction("Hide columns");
     menu.addAction(hideColumnAction);
     menu.connect(hideColumnAction, &QAction::triggered, [this] {
-        QSet<int> toHideColumns;
+        std::set<int> toHideColumns;
         for (auto&& index : selectedIndexes()) {
             if (index.column() != 0) {
                 toHideColumns.insert(index.column());
             }
         }
+        auto localizations = model_->getLocalizations();
         for (auto iter = toHideColumns.rbegin(); iter != toHideColumns.rend();
              ++iter) {
-            hideColumn(*iter);
+            int column = *iter;
+            Q_ASSERT(1 <= column && column <= localizations.size());
+            localizations.erase(localizations.begin() + column - 1);
         }
+        model_->setLocalizations(localizations);
     });
 
     auto showColumnAction = new QAction("Select columns...");
