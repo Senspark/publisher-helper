@@ -16,6 +16,7 @@ void Self::translate(const QString& from, const QString& to,
                      const QString& text, const Callback& callback) {
     if (from == to) {
         callback(text);
+        return;
     }
 
     QString formatUrl("http://translate.googleapis.com/translate_a/"
