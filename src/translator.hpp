@@ -24,6 +24,11 @@ public:
                    const QString& text, const Callback& callback);
 
 private:
+    std::map<QString,          // src language
+             std::map<QString, // des language
+                      QString  // text
+                      >>
+        cached_;
 };
 
 #endif // TRANSLATOR_HPP

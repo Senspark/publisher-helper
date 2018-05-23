@@ -15,7 +15,16 @@ Self::~Translator() {}
 void Self::translate(const QString& from, const QString& to,
                      const QString& text, const Callback& callback) {
     if (from == to) {
+        // Same language.
         callback(text);
+        return;
+    }
+
+    // Attempt to find cached texts.
+    auto&& cache = cached_[from];
+    auto iter = cache.find(to);
+    if (iter != cache.cend()) {
+        callback(iter->second);
         return;
     }
 
@@ -25,16 +34,19 @@ void Self::translate(const QString& from, const QString& to,
     QUrl url(formatUrl.arg(from).arg(to).arg(QString(encoded)));
 
     auto downloader = new Downloader();
-    downloader->download(url, [callback](const QString& content) {
-        auto doc = QJsonDocument::fromJson(content.toUtf8());
-        Q_ASSERT(doc.isArray());
-        auto&& b0 = doc.array().at(0);
-        Q_ASSERT(b0.isArray());
-        auto&& b1 = b0.toArray().at(0);
-        Q_ASSERT(b1.isArray());
-        auto&& b2 = b1.toArray().at(0);
-        callback(b2.toString());
-    });
+    downloader->download(
+        url, [this, from, to, callback](const QString& content) {
+            auto doc = QJsonDocument::fromJson(content.toUtf8());
+            Q_ASSERT(doc.isArray());
+            auto&& b0 = doc.array().at(0);
+            Q_ASSERT(b0.isArray());
+            auto&& b1 = b0.toArray().at(0);
+            Q_ASSERT(b1.isArray());
+            auto&& b2 = b1.toArray().at(0);
+            auto result = b2.toString();
+            cached_[from][to] = result;
+            callback(result);
+        });
 }
 
 void Self::translate(const Localization& from, const Localization& to,
