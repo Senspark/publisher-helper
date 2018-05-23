@@ -122,9 +122,14 @@ void Self::showContextMenu(const QPoint& position) {
     menu.addAction(translateAction);
     menu.connect(
         translateAction, &QAction::triggered, [this, removableIndexes] {
+            int count = removableIndexes.size();
+            qDebug() << "count = " << count;
+            auto processed = std::make_shared<int>(0);  // to count.
+            auto percentage = std::make_shared<int>(0); // to 100.
+
             QProgressDialog dialog(this);
             dialog.setMinimumDuration(0);
-            dialog.setMaximum(removableIndexes.size());
+            dialog.setMaximum(count);
             dialog.setValue(0);
             dialog.setCancelButton(nullptr);
             dataHelper_->pushGroup();
@@ -142,13 +147,19 @@ void Self::showContextMenu(const QPoint& position) {
                                sku, Localization::English_US));
                 translator_->translate(
                     Localization::English_US, localization, englishText,
-                    [this, &dialog, index](const QString& content) {
+                    [this, &dialog, index, count, processed,
+                     percentage](const QString& content) {
                         model_->setData(index, content,
                                         Qt::ItemDataRole::EditRole);
-                        if (dialog.value() + 1 == dialog.maximum()) {
+                        ++(*processed);
+                        if (*processed == count) {
                             dataHelper_->popGroup();
                         }
-                        dialog.setValue(dialog.value() + 1);
+                        if (*processed >= *percentage * count / 100) {
+                            constexpr int step = 10;
+                            *percentage += step;
+                            dialog.setValue(*processed);
+                        }
                     });
             }
             dialog.exec();
