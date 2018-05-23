@@ -62,7 +62,7 @@ const Self Self::Polish("Polish", "pl-PL");
 const Self Self::Portuguese_Brazil("Portuguese (Brazil)", "pt-BR");
 const Self Self::Portuguese_Portugal("Portuguese (Portugal)", "pt-PT");
 const Self Self::Romanian("Romanian", "ro");
-const Self Self::Romansh("Romansh", "rm");
+// const Self Self::Romansh("Romansh", "rm"); Not supported by google translation.
 const Self Self::Russian("Russian", "ru-RU");
 const Self Self::Serbian("Serbian", "sr");
 const Self Self::Sinhala("Sinhala", "si-LK");
@@ -142,7 +142,7 @@ QVector<Self> Self::All() {
     list.append(Portuguese_Brazil);
     list.append(Portuguese_Portugal);
     list.append(Romanian);
-    list.append(Romansh);
+    // list.append(Romansh);
     list.append(Russian);
     list.append(Serbian);
     list.append(Sinhala);
